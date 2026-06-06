@@ -9,7 +9,7 @@ def route_query(state: ManualState):
         return "ask_node"
 
     if query_type == "memory":
-        return "memory_intent_classifier_node"
+        return "generate_memory_node"
 
     if query_type == "planning":
         return "planning_node"
@@ -17,23 +17,16 @@ def route_query(state: ManualState):
     return END
 
 
-def route_ask_review(state: ManualState):
-    if state["ask_ready"]:
-        return "final_response_node"
-
-    return "ask_review_node"
-
-
 def route_plan_review(state: ManualState):
-    if state["plan_ready"]:
-        return "final_response_node"
+    if not state["plan_ready"] and state["plan_review_count"] < 5:
+        return "plan_review_node"
 
-    return "plan_review_node"
+    return "final_response_node"
 
 
 def route_memory_worthy(state: ManualState):
     if state["is_memory_worthy"]:
-        return "memory_function_node"
+        return "memory_intent_classifier_node"
 
     return END
 
@@ -55,7 +48,7 @@ def route_memory_intent(state: ManualState):
 
 def route_auto_review(state: AutoState):
     if state["auto_ready"]:
-        return "yes_node"
+        return "auto_summary_node"
 
     if state["needs_more_search"]:
         return "search_node"
@@ -64,3 +57,8 @@ def route_auto_review(state: AutoState):
         return "report_node"
 
     return END
+
+def route_ask_retrieval(state):
+    if state["ask_retrieval_decision"]:
+        return "ask_retrieval_decision_node"
+    return "final_response_node"

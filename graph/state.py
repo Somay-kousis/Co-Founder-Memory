@@ -12,12 +12,12 @@ class ManualState(TypedDict):
     temporary_memory_list: list
 
     # ask flow
-    ask_review: str
-    ask_ready: bool
+    ask_retrieval_decision: bool
 
     # planning flow
     plan_review: str
     plan_ready: bool
+    plan_review_count: int
 
     # memory flow
     extracted_memory: str
