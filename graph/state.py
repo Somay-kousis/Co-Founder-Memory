@@ -9,12 +9,15 @@ class ManualState(TypedDict):
     permanent_memory_list: list
     temporary_memory_list: list
 
-    summary: str
-
     is_memory_worthy: bool
-    candidate_memory: str
+    extracted_memory: str
 
-    review: str
+    plan_review: str
+    plan_ready: bool
+
+    ask_review: bool
+
+    summary: str
     final_response: str
 
 
@@ -23,17 +26,21 @@ class AutoState(TypedDict):
     query: str
     date: str
 
-    search_github: str
-    search_web1: str
-    search_web2: str
-    search_memory: str
-
     rag_list: list
     permanent_memory_list: list
     temporary_memory_list: list
 
-    review: str
-    summary: str
+    raw_research: str
 
     report: str
+
+    auto_review: str
+    auto_ready: bool
+
+    needs_more_search: bool
+    search_reason: str
+
+    summary: str
     notify: bool
+
+
