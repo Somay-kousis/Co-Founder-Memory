@@ -6,7 +6,7 @@ def route_query(state: ManualState):
     query_type = state["query_type"]
 
     if query_type == "ask":
-        return "ask_node"
+        return "ask_retrieval_decision_node"
 
     if query_type == "memory":
         return "generate_memory_node"
@@ -60,5 +60,5 @@ def route_auto_review(state: AutoState):
 
 def route_ask_retrieval(state):
     if state["ask_retrieval_decision"]:
-        return "ask_retrieval_decision_node"
-    return "final_response_node"
+        return "ask_rag_node"
+    return "ask_node"

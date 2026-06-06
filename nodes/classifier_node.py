@@ -22,6 +22,7 @@ def classifier_node(state: ManualState):
 
     response = llm.invoke(prompt)
 
+    # Correct way to return state updates in LangGraph
     return {
-    "query_type": response.content.strip().lower()
-}
+        "query_type": response.content.strip().lower()
+    }
