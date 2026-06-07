@@ -20,9 +20,8 @@ class ManualState(TypedDict):
     plan_review_count: int
 
     # memory flow
-    extracted_memory: str
-    is_memory_worthy: bool
-    memory_intent: str  # add / update / delete / ignore
+    extracted_memories: list[str]
+    memory_intent: list[str]  # store / delete
 
     # output
     summary: str
