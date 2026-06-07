@@ -1,0 +1,67 @@
+import json
+from langchain_core.messages import SystemMessage, HumanMessage
+from langchain_groq import ChatGroq
+from memory.schema import PermanentMemoryProfile
+
+def store_memory(store, new_memory_chunk: str):
+    """
+    Helper function to merge new memory chunks into the permanent LangGraph Store.
+    
+    Args:
+        store: The active LangGraph BaseStore instance passed from your node.
+        new_memory_chunk: The raw string memory or daily summary chunk to ingest.
+    """
+    namespace = ("memory", "profile")
+    key = "co_founder_profile"
+    
+    # 1. Fetch existing profile from LangGraph Store
+    existing_item = store.get(namespace, key)
+    
+    if existing_item and existing_item.value:
+        # Load existing data into our Pydantic model structure
+        current_profile = PermanentMemoryProfile(**existing_item.value)
+        existing_profile_json = json.dumps(current_profile.model_dump(), indent=2)
+    else:
+        # Create an empty profile if this is the first execution
+        current_profile = PermanentMemoryProfile()
+        existing_profile_json = "{}"
+
+    # 2. Set up the Reflection/Merging Prompt
+    # We instruct the LLM to cleanly map the new chunk into the correct Pydantic sub-sections
+    system_prompt = (
+        "You are the Reflection Engine of Co-Founder-Memory. Your job is to take an existing "
+        "Permanent Memory Profile and merge a new incoming chunk of memory into it.\n\n"
+        "Rules for merging:\n"
+        "1. Identify if the new info relates to preferences, core principles, projects, strategic decisions, or planning.\n"
+        "2. If an item matches an existing entry (e.g., updating a project's status or modifying a tech choice), "
+        "update it or append to its historical updates timeline instead of duplicating it.\n"
+        "3. If the information is brand new, add it to the correct section.\n"
+        "4. Preserve historical timelines and hidden contexts wherever possible."
+    )
+    
+    human_prompt = (
+        f"--- CURRENT PERMANENT MEMORY PROFILE ---\n{existing_profile_json}\n\n"
+        f"--- NEW INCOMING MEMORY CHUNK ---\n{new_memory_chunk}\n\n"
+        "Output the completely updated and unified Permanent Memory Profile."
+    )
+
+    # Initialize your local or structured LLM (Using ChatGroq like your classifier_node)
+    # Using with_structured_output guarantees the LLM returns a clean Pydantic object
+    llm = ChatGroq(model_name="llama-3.1-8b-instant", temperature=0.1)
+    structured_llm = llm.with_structured_output(PermanentMemoryProfile)
+    
+    # 3. Run the evaluation and consolidation
+    updated_profile = structured_llm.invoke([
+        SystemMessage(content=system_prompt),
+        HumanMessage(content=human_prompt)
+    ])
+
+    # 4. Save the merged profile back into the LangGraph store
+    store.put(
+        namespace,
+        key,
+        updated_profile.model_dump()
+    )
+    
+    print("Permanent memory successfully consolidated and stored.")
+    return updated_profile 
