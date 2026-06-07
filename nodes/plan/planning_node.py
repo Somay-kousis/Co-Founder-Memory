@@ -6,6 +6,8 @@ from prompts.planning.planner import PLANNER_PROMPT
 from memory.plan_schema import ProjectPlan
 from langchain_core.messages import SystemMessage, HumanMessage
 from rag.retrieve_context import retrieve_all_context
+from dotenv import load_dotenv
+load_dotenv()
 
 llm = ChatGroq(
     model="llama-3.1-8b-instant",

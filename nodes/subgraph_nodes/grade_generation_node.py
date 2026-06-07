@@ -3,6 +3,8 @@ from graph.state import SubGraphState
 from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
 from pydantic import BaseModel, Field
+from dotenv import load_dotenv
+load_dotenv()
 
 class HallucinationGrade(BaseModel):
     binary_score: str = Field(

@@ -3,6 +3,8 @@ from graph.state import ManualState
 from langchain_groq import ChatGroq
 from prompts.memory.date_compiler import DATE_COMPILER_PROMPT
 from langchain_core.prompts import ChatPromptTemplate
+from dotenv import load_dotenv
+load_dotenv()
 
 llm = ChatGroq(
     model="llama-3.1-8b-instant",

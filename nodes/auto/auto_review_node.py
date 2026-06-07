@@ -4,6 +4,8 @@ from langchain_groq import ChatGroq
 from langchain_core.messages import SystemMessage, HumanMessage
 from pydantic import BaseModel, Field
 from prompts.auto.auto_reviewer import AUTO_REVIEWER_PROMPT
+from dotenv import load_dotenv
+load_dotenv()
 
 # Unique local schema structure for the quality assurance controller
 class AutoReviewDecision(BaseModel):

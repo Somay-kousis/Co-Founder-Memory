@@ -5,6 +5,8 @@ from langchain_groq import ChatGroq
 from langchain_core.messages import SystemMessage, HumanMessage
 from prompts.auto.query_generator import QUERY_GENERATOR_PROMPT
 from memory.search_schema import SearchIntentProfile
+from dotenv import load_dotenv
+load_dotenv()
 
 llm = ChatGroq(model="llama-3.1-8b-instant", temperature=0.4)
 # Force strict structural layout matching our intent parameters

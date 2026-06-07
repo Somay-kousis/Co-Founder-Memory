@@ -3,6 +3,8 @@ from graph.state import ManualState
 from langchain_groq import ChatGroq
 from prompts.memory.user_memory_extraction import GENERATE_MEMORY
 from langchain_core.prompts import ChatPromptTemplate
+from dotenv import load_dotenv
+load_dotenv()
 
 llm = ChatGroq(
     model="llama-3.1-8b-instant",

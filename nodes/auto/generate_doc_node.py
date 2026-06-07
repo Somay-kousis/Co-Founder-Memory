@@ -3,6 +3,8 @@ from graph.state import AutoState
 from langchain_groq import ChatGroq
 from langchain_core.messages import SystemMessage, HumanMessage
 from prompts.auto.doc_generator import DOC_GENERATOR_PROMPT
+from dotenv import load_dotenv
+load_dotenv()
 
 llm = ChatGroq(model="llama-3.1-8b-instant", temperature=0.3)
 

@@ -5,6 +5,8 @@ from prompts.classifier.classify import CLASSIFY_PROMPT
 from langchain_core.prompts import ChatPromptTemplate
 from pydantic import BaseModel, Field
 from typing import Literal
+from dotenv import load_dotenv
+load_dotenv()
 
 # Strict validation schema to protect the primary router edge paths
 class QueryClassification(BaseModel):

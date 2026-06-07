@@ -5,6 +5,8 @@ from prompts.ask.answer import ANSWER_PROMPT
 from langchain_core.prompts import ChatPromptTemplate
 from rag.retrieve_context import retrieve_all_context
 from nodes.memory.temporary_memory_node import append_ai_message
+from dotenv import load_dotenv
+load_dotenv()
 
 llm = ChatGroq(
     model="llama-3.1-8b-instant",

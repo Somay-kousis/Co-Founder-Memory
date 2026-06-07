@@ -4,6 +4,8 @@ from langchain_groq import ChatGroq
 from prompts.ask.retrieval_decision import RETRIVAL_REVIEW_PROMPT
 from langchain_core.prompts import ChatPromptTemplate
 from pydantic import BaseModel, Field
+from dotenv import load_dotenv
+load_dotenv()
 
 class RetrievalDecision(BaseModel):
     should_retrieve: bool = Field(

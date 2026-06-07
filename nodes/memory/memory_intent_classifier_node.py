@@ -4,6 +4,8 @@ from langchain_groq import ChatGroq
 from prompts.memory.check_intent import CLASSIFY_INTENT
 from langchain_core.prompts import ChatPromptTemplate
 from pydantic import BaseModel, Field
+from dotenv import load_dotenv
+load_dotenv()
 
 # Strict intent validation schema
 class IntentScore(BaseModel):

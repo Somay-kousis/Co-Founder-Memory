@@ -4,6 +4,8 @@ from langgraph.store.base import BaseStore
 from langchain_core.messages import SystemMessage, HumanMessage
 from langchain_groq import ChatGroq
 from memory.schema import PermanentMemoryProfile
+from dotenv import load_dotenv
+load_dotenv()
 
 def store_memory(store: BaseStore, new_memory_chunk: str):
     """

@@ -4,6 +4,8 @@ from langchain_groq import ChatGroq
 from langchain_core.messages import SystemMessage, HumanMessage
 from pydantic import BaseModel, Field
 from typing import List
+from dotenv import load_dotenv
+load_dotenv()
 
 class ExtractedProfileMemories(BaseModel):
     new_memories: List[str] = Field(

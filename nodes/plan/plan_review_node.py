@@ -4,6 +4,8 @@ from graph.state import ManualState
 from langchain_groq import ChatGroq
 from prompts.planning.plan_reviewer import PLAN_REVIEWER_PROMPT
 from langchain_core.messages import SystemMessage, HumanMessage
+from dotenv import load_dotenv
+load_dotenv()
 
 llm = ChatGroq(
     model="llama-3.1-8b-instant",

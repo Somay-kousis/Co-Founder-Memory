@@ -1,12 +1,19 @@
-# nodes/auto/auto_context_node.py
+import os
 import json
 from datetime import datetime, timedelta
+
 from graph.state import AutoState
 from langchain_groq import ChatGroq
 from langchain_core.messages import SystemMessage, HumanMessage
 from prompts.auto.context_distiller import AUTO_CONTEXT_PROMPT
 
-llm = ChatGroq(model="llama-3.1-8b-instant", temperature=0.2)
+# Load environment variables from the .env file BEFORE initializing the LLM
+from dotenv import load_dotenv
+load_dotenv()
+
+llm = ChatGroq(
+    model="llama-3.1-8b-instant", 
+    temperature=0.2)
 
 def auto_context_node(state: AutoState):
     """
