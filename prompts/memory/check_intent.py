@@ -1,4 +1,4 @@
-STORE_DELETE_INTENT = """
+CLASSIFY_INTENT = """
 You are a memory action classifier.
 
 You will receive one extracted memory.
@@ -68,6 +68,18 @@ delete
 
 Memory:
 User requested removal of the old MCP plan.
+
+Output:
+delete
+
+Memory:
+Delete all memories.
+
+Output:
+delete
+
+Memory:
+User asked to delete all the memories.
 
 Output:
 delete

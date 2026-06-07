@@ -1,4 +1,4 @@
-SUMMARY_MEMORY_EXTRACTION = """
+GENERATE_MEMORY = """
 You are a memory extraction agent.
 
 You will receive a conversation summary.

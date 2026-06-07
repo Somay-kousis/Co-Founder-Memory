@@ -14,9 +14,10 @@ from nodes.plan.plan_review_node import plan_review_node
 from nodes.memory.user_memory_extraction_node import user_memory_extraction_node
 from nodes.memory.memory_intent_classifier_node import memory_intent_classifier_node
 from nodes.memory.apply_memory_changes_node import apply_memory_changes_node
+from langgraph.store.memory import InMemoryStore
 
 # Import our compiled Self-Correcting CRAG/SRAG Subgraph
-from graph.subgraph import compiled_rag_subgraph
+from nodes.ask.ask_rag_node import ask_rag_node
 
 # 1. Initialize the Master State Machine with ManualState
 workflow = StateGraph(ManualState)
@@ -31,8 +32,8 @@ workflow.add_node("classifier_node", classifier_node)
 # Conversational & Context Tracks
 workflow.add_node("ask_node", ask_node)
 workflow.add_node("ask_retrieval_decision_node", ask_retrieval_decision_node)
-# Inject the compiled CRAG/SRAG subgraph to act as the full ask_rag_node process block
-workflow.add_node("ask_rag_node", compiled_rag_subgraph)
+# Use the actual RAG-enabled answer node for ask_rag path
+workflow.add_node("ask_rag_node", ask_rag_node)
 
 # Iterative Planning Loops
 workflow.add_node("planning_node", planning_node)
@@ -96,4 +97,9 @@ workflow.add_edge("apply_memory_changes_node", END)
 # ====================================================================
 # 🏁 SYSTEM COMPILED RUNNABLE ASSET
 # ====================================================================
-compiled_main_graph = workflow.compile()
+
+# 1. Instantiate the memory store
+memory_store = InMemoryStore()
+
+# 2. Compile the graph with the store attached
+compiled_main_graph = workflow.compile(store=memory_store)

@@ -16,3 +16,35 @@ def route_subgraph_search(state: SubGraphState):
     
     print("🟢 Subgraph Router: Context verified and grounded. Exiting subgraph.")
     return END
+
+# ---------------------------------------------------------
+# GRAPH CONSTRUCTION & COMPILATION
+# ---------------------------------------------------------
+
+# 1. Initialize the graph with your state
+subgraph_builder = StateGraph(SubGraphState)
+
+# 2. Add your nodes to the graph
+subgraph_builder.add_node("grade_documents_node", grade_documents_node)
+subgraph_builder.add_node("web_search_node", web_search_node)
+subgraph_builder.add_node("grade_generation_node", grade_generation_node)
+
+# 3. Define the flow (adjust these edges based on your exact desired logic)
+subgraph_builder.add_edge(START, "grade_documents_node")
+
+# 4. Add the conditional routing
+subgraph_builder.add_conditional_edges(
+    "grade_documents_node",
+    route_subgraph_search,
+    {
+        "web_search_node": "web_search_node",
+        END: END
+    }
+)
+
+# 5. Finish the routing for the web search path
+subgraph_builder.add_edge("web_search_node", "grade_generation_node")
+subgraph_builder.add_edge("grade_generation_node", END)
+
+# 6. Compile the graph into the variable main_graph.py is looking for
+compiled_rag_subgraph = subgraph_builder.compile()

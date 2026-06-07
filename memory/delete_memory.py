@@ -48,6 +48,23 @@ def delete_memory(store: BaseStore, deletion_instruction: str):
 
     llm = ChatGroq(model_name="llama-3.1-8b-instant", temperature=0.1)
     structured_llm = llm.with_structured_output(PermanentMemoryProfile)
+    delete_all_signals = [
+        "delete all the memories",
+        "forget all the memories",
+        "delete all memory",
+        "forget all memory",
+        "clear all memories",
+        "remove all memories",
+        "forget everything",
+        "delete everything"
+    ]
+
+    if any(signal in deletion_instruction.lower() for signal in delete_all_signals):
+        empty_profile = PermanentMemoryProfile().model_dump()
+        store.put(namespace, key, empty_profile)
+        print("All permanent memories have been cleared.")
+        return empty_profile
+
     
     # 4. Run the evaluation and pruning
     pruned_profile = structured_llm.invoke([

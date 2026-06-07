@@ -1,4 +1,4 @@
-RETRIEVAL_REVIEW_PROMPT = """
+RETRIVAL_REVIEW_PROMPT = """
 You are a retrieval decision agent.
 
 Determine whether the user's query requires retrieving information from:
@@ -21,22 +21,29 @@ Retrieval is NOT required when the question can be answered using general knowle
 Examples:
 
 User: What is LangGraph?
-Output: False
+Output: false
 
 User: Explain embeddings.
-Output: False
+Output: false
 
 User: What did I decide about MCP?
-Output: True
+Output: true
 
 User: What projects am I currently working on?
-Output: True
+Output: true
 
 User: Summarize my roadmap.
-Output: True
+Output: true
 
 User: What is a vector database?
-Output: False
+Output: false
 
 Return only a boolean decision indicating whether retrieval is required.
+
+# nodes/ask/ask_retrieval_decision_node.py
+    
+    "CRITICAL FORMATTING RULES:\n"
+    "1. You must output strictly valid JSON.\n"
+    "2. All boolean values MUST be lowercase ('true' or 'false').\n"
+
 """

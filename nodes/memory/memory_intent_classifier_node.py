@@ -3,6 +3,7 @@ from graph.state import ManualState
 from langchain_groq import ChatGroq
 from prompts.memory.check_intent import CLASSIFY_INTENT
 from langchain_core.prompts import ChatPromptTemplate
+from nodes.memory.memory_utils import is_memory_delete_query
 from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 load_dotenv()
@@ -28,6 +29,10 @@ def memory_intent_classifier_node(state: ManualState):
     memories_to_check = state.get("extracted_memories") or []
 
     for memory in memories_to_check:
+        if is_memory_delete_query(memory):
+            memory_intents.append("delete")
+            continue
+
         prompt = chat_template.invoke({
             "memory": memory
         })
