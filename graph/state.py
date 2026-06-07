@@ -25,7 +25,6 @@ class ManualState(TypedDict):
     temporary_memory:list[str]
     chunk_memory: list[str]
     date_memory: dict[str, str]
-    permanent_memory: dict[str, str]
 
     # output
     final_response: str
