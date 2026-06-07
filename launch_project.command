@@ -1,21 +1,24 @@
 #!/bin/bash
 
-# Navigate to the exact folder where this command script lives
-cd "$(dirname "$0")"
+# 1. Navigate to the exact project folder securely
+cd "$(dirname "$0")" || exit
 
 echo "🚀 CO-FOUNDER MEMORY SYSTEM IGNITION"
 echo "=========================================="
 
-# 1. Activate your Python Virtual Environment if you have one (Optional)
-# source .venv/bin/activate
+# 2. Force the Mac to use your specific project environment
+source .venv/bin/activate
 
-# 2. Boot the Smart Midnight Loop Daemon in a background terminal process
+# 3. Lock the Python path to the root folder so 'scripts' can find 'graph'
+export PYTHONPATH="$(pwd)"
+
+# 4. Boot the Smart Midnight Loop Daemon in the background
 echo "🌙 Spinning up Midnight Daemon Watcher..."
-python3 scripts/run_midnight_loop.py &
+python scripts/run_midnight_loop.py &
 
-# 3. Boot your Live Chat Interactive Console immediately in the foreground
+# 5. Boot your Live Chat Interactive Console in the foreground
 echo "💬 Opening Interactive Manual Terminal Chat..."
-python3 run_manual.py
+python run_manual.py
 
-# Keep window open if the live chat exits cleanly
-bash
+# 6. Keep the window open cleanly using Mac's native zsh shell
+zsh
