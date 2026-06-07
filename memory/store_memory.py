@@ -1,15 +1,13 @@
+# memory/store_memory.py
 import json
+from langgraph.store.base import BaseStore
 from langchain_core.messages import SystemMessage, HumanMessage
 from langchain_groq import ChatGroq
 from memory.schema import PermanentMemoryProfile
 
-def store_memory(store, new_memory_chunk: str):
+def store_memory(store: BaseStore, new_memory_chunk: str):
     """
     Helper function to merge new memory chunks into the permanent LangGraph Store.
-    
-    Args:
-        store: The active LangGraph BaseStore instance passed from your node.
-        new_memory_chunk: The raw string memory or daily summary chunk to ingest.
     """
     namespace = ("memory", "profile")
     key = "co_founder_profile"
@@ -18,16 +16,17 @@ def store_memory(store, new_memory_chunk: str):
     existing_item = store.get(namespace, key)
     
     if existing_item and existing_item.value:
-        # Load existing data into our Pydantic model structure
-        current_profile = PermanentMemoryProfile(**existing_item.value)
+        try:
+            # Use model_validate to handle validation checks cleanly
+            current_profile = PermanentMemoryProfile.model_validate(existing_item.value)
+        except Exception:
+            current_profile = PermanentMemoryProfile()
         existing_profile_json = json.dumps(current_profile.model_dump(), indent=2)
     else:
-        # Create an empty profile if this is the first execution
         current_profile = PermanentMemoryProfile()
         existing_profile_json = "{}"
 
     # 2. Set up the Reflection/Merging Prompt
-    # We instruct the LLM to cleanly map the new chunk into the correct Pydantic sub-sections
     system_prompt = (
         "You are the Reflection Engine of Co-Founder-Memory. Your job is to take an existing "
         "Permanent Memory Profile and merge a new incoming chunk of memory into it.\n\n"
@@ -45,8 +44,6 @@ def store_memory(store, new_memory_chunk: str):
         "Output the completely updated and unified Permanent Memory Profile."
     )
 
-    # Initialize your local or structured LLM (Using ChatGroq like your classifier_node)
-    # Using with_structured_output guarantees the LLM returns a clean Pydantic object
     llm = ChatGroq(model_name="llama-3.1-8b-instant", temperature=0.1)
     structured_llm = llm.with_structured_output(PermanentMemoryProfile)
     
@@ -64,4 +61,4 @@ def store_memory(store, new_memory_chunk: str):
     )
     
     print("Permanent memory successfully consolidated and stored.")
-    return updated_profile 
+    return updated_profile
