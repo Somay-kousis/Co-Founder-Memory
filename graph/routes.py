@@ -24,12 +24,10 @@ def route_plan_review(state: ManualState):
     is_ready = state.get("plan_ready", False)
     loops_spent = state.get("plan_review_count", 0)
 
-    # If revisions are requested and we are under the 5-loop ceiling -> loop back
     if not is_ready and loops_spent < 5:
         print(f"🔄 Plan Rejected. Loop counter at {loops_spent}/5. Sending back to planning_node.")
         return "planning_node"
 
-    # If it is ready OR hard cap is reached -> break out completely to END
     if loops_spent >= 5:
         print("🚨 Loop execution safety threshold hit (Max 5 loops reached). Breaking loop.")
     else:
@@ -39,22 +37,14 @@ def route_plan_review(state: ManualState):
 
 def route_auto_review(state: AutoState):
     """
-    Directs flow based on the Quality Control findings of the auto_review_node.
-    Matches the Excalidraw white-board loop topology.
+    Streamlined Auto Review Router: 
+    Matches the exact 6-file layout sitting inside nodes/auto/
     """
-    # 1. Content is pristine -> route straight to permanent day synthesis
-    if state.get("auto_ready", False):
-        print("🟢 Auto Review Passed: Content clean. Routing to auto_summary_node.")
-        return "auto_summary_node"
-
-    # 2. Missing info found -> send to tool search first, which steps into generate_doc_node next
+    # 1. Missing context/links found -> Loop back to tool search layer
     if state.get("needs_more_search", False):
-        print("🔍 Auto Review Flagged: Context missing. Routing to search_node.")
+        print("🔍 Auto Review Flagged: Context missing. Routing back to search_node.")
         return "search_node"
 
-    # 3. Text formatting is sloppy -> send to editing desk first, which steps into generate_doc_node next
-    if state.get("needs_better_words", False):
-        print("✍️ Auto Review Flagged: Sloppy syntax. Routing to report_node.")
-        return "report_node"
-
-    return "auto_summary_node"
+    # 2. Approved OR Loop Cap Hit -> Route straight to permanent timeline extraction
+    print("🟢 Auto Review Passed: Content clean or ready. Routing to summary_memory_extraction_node.")
+    return "summary_memory_extraction_node"
