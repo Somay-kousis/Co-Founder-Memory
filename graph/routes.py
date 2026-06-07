@@ -9,7 +9,7 @@ def route_query(state: ManualState):
         return "ask_retrieval_decision_node"
 
     if query_type == "memory":
-        return "generate_memory_node"
+        return "user_memory_extraction_node"
 
     if query_type == "planning":
         return "planning_node"
@@ -25,11 +25,10 @@ def route_ask_retrieval(state: ManualState):
 
 
 def route_plan_review(state: ManualState):
-    if not state["plan_ready"] and state["plan_review_count"] < 5:
+    if not state.get("plan_ready") and state.get("plan_review_count", 0) < 5:
         return "plan_review_node"
 
-    return "final_response_node"
-
+    return "plan_finalize_node"
 
 def route_auto_review(state: AutoState):
     if state["auto_ready"]:
