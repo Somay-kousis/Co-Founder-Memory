@@ -12,7 +12,7 @@ class ManualState(TypedDict):
     plan: str
     plan_review: str
     plan_ready: str
-    plan_review_count: str
+    plan_review_count: int
 
     # rag/context
     rag_list: list[str]
