@@ -17,6 +17,36 @@ Co-Founder Memory is an agentic, stateful system designed to capture engineering
 
 ---
 
+## Execution Examples
+
+### 1. Interactive Memory & Contextual Chat (Manual Track)
+
+The interactive manual session demonstrates how the co-founder assistant extracts long-term episodic memories, recalls dates on demand, and injects developer profile context to suggest personalized projects:
+
+<p align="center">
+  <img src="./assets/manual_workflow.jpg" alt="Interactive Chat Example" width="800px" style="border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);" />
+</p>
+
+* **Factual Memory Ingestion**: The system processes user declarations (such as scheduling hackathons) and stores them directly into the permanent LangGraph store.
+* **Natural Context Recall**: When questioned, the system accesses memory profiles to retrieve stored timelines.
+* **Profile-Weighted Recommendations**: Retrieval fuses Chroma DB vectors and permanent profile traits to generate grounded, personalized project suggestions matching your building style.
+
+---
+
+### 2. Multi-Loop Self-Correction & Dossier Assembly (Automated Track)
+
+The automated background timeline loop compiles engineering notes, generates queries, runs web search fallback pipelines, and loops through critique-driven self-correction before publishing the daily dossier:
+
+<p align="center">
+  <img src="./assets/cron_workflow.jpg" alt="Automated Dossier Example" width="800px" style="border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);" />
+</p>
+
+* **Automatic Research**: Scans recent progress logs, generates search terms, and crawls DuckDuckGo for context gaps.
+* **Critique & Self-Correction**: An auto-reviewer node evaluates draft dossier quality. If formatting is informal or facts are missing, it flags the state and routes the pipeline back to search.
+* **Extraction & Alerting**: Once the critic passes the draft, the system updates the profile store and broadcasts a completion alert to the developer.
+
+---
+
 ## System Architecture
 
 ### 1. Interactive Manual Workflow
