@@ -12,7 +12,7 @@ load_dotenv()
 class IntentScore(BaseModel):
     intent: str = Field(description="Must be exactly 'store' or 'delete' based on memory modifications context.")
 
-llm = ChatGroq(model="llama-3.1-8b-instant", temperature=0.0)
+llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.0)
 structured_classifier = llm.with_structured_output(IntentScore)
 
 chat_template = ChatPromptTemplate.from_messages([

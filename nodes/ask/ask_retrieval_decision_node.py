@@ -12,7 +12,7 @@ class RetrievalDecision(BaseModel):
         description="True if the query requires technical code context, file specs, or library configurations. False for general chatter."
     )
 
-llm = ChatGroq(model="llama-3.1-8b-instant", temperature=0.0) # Lower temperature for classification stability
+llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.0) # Lower temperature for classification stability
 structured_classifier = llm.with_structured_output(RetrievalDecision)
 
 chat_template = ChatPromptTemplate.from_messages([

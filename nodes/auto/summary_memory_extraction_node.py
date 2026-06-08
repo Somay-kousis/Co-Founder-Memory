@@ -13,7 +13,7 @@ class ExtractedProfileMemories(BaseModel):
         description="A list of newly extracted long-term profile adjustments, core technical stacks, or recurring project tracks."
     )
 
-llm = ChatGroq(model="llama-3.1-8b-instant", temperature=0.1)
+llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.1)
 structured_extractor = llm.with_structured_output(ExtractedProfileMemories)
 
 EXTRACTION_PROMPT = """You are a profile intelligence observer. Review the finalized daily operational summary document and pull out any persistent, long-term facts about the user's setup, core stack rules, or project goals.

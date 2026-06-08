@@ -7,10 +7,16 @@ from memory.schema import PermanentMemoryProfile
 from dotenv import load_dotenv
 load_dotenv()
 
-def store_memory(store: BaseStore, new_memory_chunk: str):
+def store_memory(store: BaseStore, new_memory_chunks: list):
     """
     Helper function to merge new memory chunks into the permanent LangGraph Store.
     """
+    if isinstance(new_memory_chunks, str):
+        new_memory_chunks = [new_memory_chunks]
+
+    if not new_memory_chunks:
+        return None
+
     namespace = ("memory", "profile")
     key = "co_founder_profile"
     
@@ -31,7 +37,7 @@ def store_memory(store: BaseStore, new_memory_chunk: str):
     # 2. Set up the Reflection/Merging Prompt
     system_prompt = (
         "You are the Reflection Engine of Co-Founder-Memory. Your job is to take an existing "
-        "Permanent Memory Profile and merge a new incoming chunk of memory into it.\n\n"
+        "Permanent Memory Profile and merge new incoming chunks of memory into it.\n\n"
         "Rules for merging:\n"
         "1. Identify if the new info relates to preferences, core principles, projects, strategic decisions, or planning.\n"
         "2. If an item matches an existing entry (e.g., updating a project's status or modifying a tech choice), "
@@ -40,13 +46,16 @@ def store_memory(store: BaseStore, new_memory_chunk: str):
         "4. Preserve historical timelines and hidden contexts wherever possible."
     )
     
+    # Format the chunks as a bulleted list
+    new_chunks_text = "\n".join([f"- {m}" for m in new_memory_chunks])
+    
     human_prompt = (
         f"--- CURRENT PERMANENT MEMORY PROFILE ---\n{existing_profile_json}\n\n"
-        f"--- NEW INCOMING MEMORY CHUNK ---\n{new_memory_chunk}\n\n"
+        f"--- NEW INCOMING MEMORY CHUNKS ---\n{new_chunks_text}\n\n"
         "Output the completely updated and unified Permanent Memory Profile."
     )
 
-    llm = ChatGroq(model_name="llama-3.1-8b-instant", temperature=0.1)
+    llm = ChatGroq(model_name="llama-3.3-70b-versatile", temperature=0.1)
     structured_llm = llm.with_structured_output(PermanentMemoryProfile)
     
     # 3. Run the evaluation and consolidation

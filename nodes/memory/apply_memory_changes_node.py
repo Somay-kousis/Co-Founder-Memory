@@ -23,23 +23,23 @@ def apply_memory_changes_node(state: ManualState, config: RunnableConfig, *, sto
     # In case multiple statements were extracted, we process them sequentially
     is_delete_request = is_memory_delete_query(state.get("user_query", ""))
 
+    store_chunks = []
     for i, chunk in enumerate(extracted_items):
         # Fallback to "store" if your classifier missed an explicit index intent
         current_intent = intents[i] if i < len(intents) else "store"
         
-        print(f"Processing memory chunk [{i+1}/{len(extracted_items)}] with intent: '{current_intent}'")
-
         if current_intent == "delete":
-            # Fire your local delete helper
+            print(f"Processing delete instruction: {chunk}")
             delete_memory(store=store, deletion_instruction=chunk)
-            continue
-
-        if is_delete_request:
+        elif is_delete_request:
             print(f"Skipping store for delete-request query: {chunk}")
-            continue
+        else:
+            print(f"Queueing memory chunk [{i+1}/{len(extracted_items)}] for storage: '{chunk}'")
+            store_chunks.append(chunk)
 
-        # Fire your local store/update helper (handles adds and updates via our schema)
-        store_memory(store=store, new_memory_chunk=chunk)
+    if store_chunks:
+        print(f"Executing batch store of {len(store_chunks)} memory chunks...")
+        store_memory(store=store, new_memory_chunks=store_chunks)
 
     # 3. Return an update to the state indicating the memory action is completed
     return {

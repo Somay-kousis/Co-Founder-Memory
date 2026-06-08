@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Co-Founder's Memory</title>
+    <meta name="description" content="A stateful second mind that preserves momentum, decisions, and narrative continuity.">
+    <!-- Google Fonts for Editorial Serif, Monospace, and Typewriter/Handwritten text -->
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Special+Elite&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <!-- Coffee rings & spills overlay -->
+    <div class="spills-container">
+        <!-- SVG Coffee Stain bottom right -->
+        <svg class="coffee-stain stain-bottom-right" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 100, 20 A 80, 80 0 1, 0 100, 180 A 80, 80 0 1, 0 100, 20 Z" fill="none" stroke="rgba(115, 90, 75, 0.12)" stroke-width="4.5" stroke-linecap="round" stroke-dasharray="12 5 18 10 6 14" />
+            <path d="M 98, 26 A 72, 72 0 1, 0 98, 170 A 72, 72 0 1, 0 98, 26 Z" fill="none" stroke="rgba(115, 90, 75, 0.06)" stroke-width="2" stroke-linecap="round" stroke-dasharray="10 8 14 12" />
+            <path d="M 50, 45 C 55, 48 58, 52 65, 50" fill="none" stroke="rgba(115, 90, 75, 0.1)" stroke-width="1.5" />
+            <path d="M 130, 150 C 135, 155 142, 160 148, 158" fill="none" stroke="rgba(115, 90, 75, 0.08)" stroke-width="2" />
+        </svg>
+        <!-- Coffee ring stain top left -->
+        <svg class="coffee-stain stain-top-left" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 100, 20 A 80, 80 0 1, 0 100, 180 A 80, 80 0 1, 0 100, 20 Z" fill="none" stroke="rgba(115, 90, 75, 0.06)" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="15 6 10 12" />
+        </svg>
+    </div>
+
+    <!-- Pinned sketches/notes layer -->
+    <div class="workspace-wrapper">
+        
+        <!-- COLUMN 1: MEMORY FRAGMENTS -->
+        <aside class="panel side-panel left-panel">
+            <div class="sticky-note note-1">
+                <span class="pin"></span>
+                <p>"Wanted permanence in a world where everything keeps leaving."</p>
+            </div>
+            
+            <div class="sticky-note note-2">
+                <span class="pin"></span>
+                <p>July 6 – AMD Hackathon.<br>Finalize Astra AI prototype.</p>
+            </div>
+
+            <div class="panel-header">
+                <span class="catalog-num">VOL. 01</span>
+                <h2>Memory Fragments</h2>
+                <p class="panel-desc">Unfinished progress logs and observations</p>
+            </div>
+
+            <div class="timeline-logs" id="timeline-log-list">
+                <!-- Timeline logs injected here -->
+                <div class="loading-placeholder">Reading timeline records...</div>
+            </div>
+        </aside>
+
+        <!-- COLUMN 2: FIELD JOURNAL (CENTER NOTEBOOK) -->
+        <main class="journal-notebook">
+            <div class="notebook-header">
+                <span class="notebook-title">Co-Founder's Memory</span>
+                <span class="status-indicator">
+                    <span class="pulse-dot"></span>
+                    active mind
+                </span>
+            </div>
+
+            <div class="notebook-pages">
+                <!-- Seam in the middle -->
+                <div class="notebook-seam"></div>
+
+                <!-- Page Left: Dialogue -->
+                <section class="notebook-page page-left">
+                    <h3>Interconnected Dialogue</h3>
+                    <div class="dialogue-container" id="chat-box">
+                        <div class="log-entry system">
+                            <span class="log-meta">[log_00] – system</span>
+                            <p class="log-text">Journal stream active. Seeking context from the vault.</p>
+                        </div>
+                        <div class="log-entry mind">
+                            <span class="log-meta">[log_01] – mind</span>
+                            <p class="log-text">Hey, it's just around the corner - 6th of July. I remember you adding it to your memory, so I'm guessing you're getting ready for it? What's on your mind? Are you working on a project to submit or still deciding?</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Page Right: Input & Action -->
+                <section class="notebook-page page-right">
+                    <h3>Response & Annotation</h3>
+                    
+                    <div class="instruction-block">
+                        <p>Type on the ledger line below to prompt the system.</p>
+                    </div>
+
+                    <div class="ledger-box">
+                        <div class="ledger-line-container">
+                            <input type="text" id="chat-input" class="ledger-input" placeholder="Type a memory, question, or goal..." autocomplete="off">
+                            <button id="send-btn" class="graphite-btn">Record</button>
+                        </div>
+                    </div>
+
+                    <div class="notebook-footer">
+                        <a href="#" id="purge-btn" class="notebook-link">Purge Session State</a>
+                        <span class="timestamp-stamp" id="system-time">00:00:00 // 2026-06-08</span>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- COLUMN 3: SYSTEM MAP & CONTEXT -->
+        <aside class="panel side-panel right-panel">
+            <div class="panel-header">
+                <span class="catalog-num">MAP // CONTEXT</span>
+                <h2>The Mind Map</h2>
+                <p class="panel-desc">interconnected goals, tools, and stack parameters</p>
+            </div>
+
+            <!-- Dynamic Interactive Knowledge Graph (Obsidian Style SVG) -->
+            <div class="map-viewport">
+                <svg id="knowledge-graph" width="100%" height="100%"></svg>
+                <div class="map-hint">Click nodes to view associations</div>
+            </div>
+
+            <!-- Decisions & Principles Vault -->
+            <div class="decisions-section">
+                <h3>Decisions & Core Principles</h3>
+                <div class="vault-scroll" id="decisions-vault">
+                    <p class="empty-vault-msg">No active guidelines or strategic choices saved in the vault.</p>
+                </div>
+            </div>
+
+            <!-- Action panel -->
+            <div class="compile-box">
+                <button id="compile-btn" class="border-btn">Compile Dossier</button>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Full-screen Typewriter Dossier modal overlay -->
+    <div class="modal-overlay" id="dossier-modal">
+        <div class="dossier-paper">
+            <div class="dossier-tape"></div>
+            <div class="modal-close" id="close-modal-btn">✕ Close Report</div>
+            <div class="dossier-content" id="dossier-content-area">
+                <!-- Compiled markdown content rendered here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="/script.js"></script>
+</body>
+</html>

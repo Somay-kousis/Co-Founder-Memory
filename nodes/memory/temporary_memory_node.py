@@ -5,7 +5,7 @@ from graph.state import ManualState
 from dotenv import load_dotenv
 load_dotenv()
 
-chunk_llm = ChatGroq(model="llama-3.1-8b-instant", temperature=0.2)
+chunk_llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.2)
 
 chunk_summarizer_template = ChatPromptTemplate.from_messages([
     ("system", (

@@ -11,7 +11,7 @@ class DocumentGrade(BaseModel):
         description="Is the document relevant to the user query? 'yes' or 'no'"
     )
 
-llm = ChatGroq(model="llama-3.1-8b-instant", temperature=0.0)
+llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.0)
 structured_grader = llm.with_structured_output(DocumentGrade)
 
 GRADE_PROMPT = """You are an expert technical QA engineer grading the relevance of a retrieved document chunk to a user query.

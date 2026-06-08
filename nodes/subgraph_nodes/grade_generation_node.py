@@ -11,7 +11,7 @@ class HallucinationGrade(BaseModel):
         description="Is the generated answer grounded in the provided context? 'yes' or 'no'"
     )
 
-llm = ChatGroq(model="llama-3.1-8b-instant", temperature=0.0)
+llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.0)
 structured_grader = llm.with_structured_output(HallucinationGrade)
 
 HALLUCINATION_PROMPT = """You are a critical verification agent checking an LLM response for hallucinations.

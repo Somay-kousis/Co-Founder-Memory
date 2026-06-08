@@ -12,7 +12,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 llm = ChatGroq(
-    model="llama-3.1-8b-instant", 
+    model="llama-3.3-70b-versatile", 
     temperature=0.2)
 
 def auto_context_node(state: AutoState):

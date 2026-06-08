@@ -19,7 +19,7 @@ class AutoReviewDecision(BaseModel):
         description="Detailed, raw commentary outlining exactly what elements are missing or what structural parts need editing."
     )
 
-llm = ChatGroq(model="llama-3.1-8b-instant", temperature=0.1)
+llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.1)
 structured_reviewer = llm.with_structured_output(AutoReviewDecision)
 
 def auto_review_node(state: AutoState):

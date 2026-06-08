@@ -8,7 +8,7 @@ from memory.search_schema import SearchIntentProfile
 from dotenv import load_dotenv
 load_dotenv()
 
-llm = ChatGroq(model="llama-3.1-8b-instant", temperature=0.4)
+llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.4)
 # Force strict structural layout matching our intent parameters
 structured_query_generator = llm.with_structured_output(SearchIntentProfile)
 
