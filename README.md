@@ -372,25 +372,109 @@ Create a `.env` file in the root directory:
 
 ```env
 GROQ_API_KEY=your_groq_api_key_here
+
+# Supabase Credentials (Required for cloud deployment, fallback to local file if missing)
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_SERVICE_KEY=your-supabase-service-role-key
+PORT=8000
+RUN_BACKGROUND_SCHEDULER=true
+```
+
+### 4. Supabase Database Configuration
+Before running or deploying the project with Supabase, run this setup script in the **SQL Editor** of your Supabase console:
+
+```sql
+-- Enable the pgvector extension
+create extension if not exists vector;
+
+-- Create pgvector table
+create table if not exists documents (
+  id bigserial primary key,
+  content text,
+  metadata jsonb,
+  embedding vector(384)
+);
+
+-- HNSW similarity search index
+create index on documents using hnsw (embedding vector_cosine_ops);
+
+-- Similarity search function
+create or replace function match_documents (
+  query_embedding vector(384),
+  match_threshold float,
+  match_count int
+)
+returns table (
+  id bigint,
+  content text,
+  metadata jsonb,
+  similarity float
+)
+language plpgsql stable
+as $$
+begin
+  return query
+  select
+    documents.id,
+    documents.content,
+    documents.metadata,
+    1 - (documents.embedding <=> query_embedding) as similarity
+  from documents
+  where 1 - (documents.embedding <=> query_embedding) > match_threshold
+  order by documents.embedding <=> query_embedding
+  limit match_count;
+end;
+$$;
+
+-- State store table for run settings/history
+create table if not exists state_store (
+  id text primary key,
+  state jsonb not null,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- LangGraph profile store table
+create table if not exists memory_store (
+  namespace text[] not null,
+  key text not null,
+  value jsonb not null,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  primary key (namespace, key)
+);
 ```
 
 ---
 
 ## Execution Guide
 
-### Interactive CLI Simulator
-Launch the live workspace simulation to test interactive chats, planning sequences, or to manually force-run the daily automated loop:
+### Ingesting Codebase/Markdown Knowledge
+To parse your local knowledge base `.md` files and upload them to either Supabase pgvector (if credentials are set) or Chroma DB:
 
 ```bash
-python scripts/run_manual.py
+PYTHONPATH=. python rag/injest.py
 ```
 
-* Select `1` to test the manual track (Live interactive conversations, RAG, planning, and memory extraction).
-* Select `2` to force-run the automated daily timeline loop immediately.
-
-### Daily Catch-Up Scheduler Daemon
-Launch the background daemon. It monitors system time to execute automated pipeline compilation at midnight or handles catching up automatically if the device was offline:
+### Live Web Dashboard (Cockpit)
+Launch the unified FastAPI server which exposes web endpoints, starts the background daily loop scheduler, and serves a premium dark-mode management GUI:
 
 ```bash
-python scripts/run_midnight_loop.py
+PYTHONPATH=. python app.py
+```
+Open **`http://localhost:8000`** in your browser to access the Cockpit where you can live chat, review permanent memory profiles, and trigger dossiers.
+
+### Interactive CLI Simulator
+Alternatively, run the interactive terminal-based simulation:
+
+```bash
+PYTHONPATH=. python scripts/run_manual.py
+```
+
+* Select `1` to test the manual track (Live conversation, RAG, planning, and memory extraction).
+* Select `2` to force-run the automated daily loop timeline.
+
+### Daily Catch-Up Scheduler Daemon (Standalone)
+If not running the Web Cockpit, launch the standalone background watcher daemon:
+
+```bash
+PYTHONPATH=. python scripts/run_midnight_loop.py
 ```

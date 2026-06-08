@@ -15,6 +15,8 @@ from nodes.memory.user_memory_extraction_node import user_memory_extraction_node
 from nodes.memory.memory_intent_classifier_node import memory_intent_classifier_node
 from nodes.memory.apply_memory_changes_node import apply_memory_changes_node
 from langgraph.store.memory import InMemoryStore
+from memory.supabase_store import SupabaseStore
+import os
 
 # Import our compiled Self-Correcting CRAG/SRAG Subgraph
 from nodes.ask.ask_rag_node import ask_rag_node
@@ -99,7 +101,15 @@ workflow.add_edge("apply_memory_changes_node", END)
 # ====================================================================
 
 # 1. Instantiate the memory store
-memory_store = InMemoryStore()
+supabase_url = os.getenv("SUPABASE_URL")
+supabase_key = os.getenv("SUPABASE_SERVICE_KEY") or os.getenv("SUPABASE_KEY")
+
+if supabase_url and supabase_key:
+    print("Main Graph: Initializing graph with persistent SupabaseStore.")
+    memory_store = SupabaseStore()
+else:
+    print("Main Graph: Supabase credentials missing. Initializing graph with InMemoryStore.")
+    memory_store = InMemoryStore()
 
 # 2. Compile the graph with the store attached
 compiled_main_graph = workflow.compile(store=memory_store)
