@@ -2,24 +2,14 @@
 import os
 from graph.main_graph import compiled_main_graph
 from graph.auto_graph import compiled_auto_graph
+from storage_utils import load_state, save_state  # <-- NEW IMPORT
 
 def test_live_chat():
-    print("\n💬 Testing Live Interactive Graph (Manual Track)...")
+    print("\n💬 Testing Live Interactive Graph (Production Track)...")
     print("Type 'bye' to exit the session.")
 
-    state = {
-        "temporary_memory": [
-            "Human: Hey, let's make sure our database choice doesn't need cloud tokens.",
-            "AI: Sounds good. We should store everything in local Chroma vectors to keep it free."
-        ],
-        "extracted_memories": ["User values offline-first privacy controls."],
-        "chunk_memory": [],
-        "date_memory": {},
-        "rag_list": [],
-        "retrieved_context": [],
-        "memory_intent": [],
-        "final_response": ""
-    }
+    # 1. Load the REAL state from memory
+    state = load_state()
 
     while True:
         user_query = input("Enter a live user query:\n> ").strip()
@@ -32,9 +22,11 @@ def test_live_chat():
             continue
 
         state["user_query"] = user_query
+        
+        # 2. Invoke the graph
         result = compiled_main_graph.invoke(state)
 
-        # Keep state transitions so the session maintains history context.
+        # 3. Update local state variables
         state.update({
             "temporary_memory": result.get("temporary_memory", state.get("temporary_memory", [])),
             "chunk_memory": result.get("chunk_memory", state.get("chunk_memory", [])),
@@ -43,33 +35,28 @@ def test_live_chat():
             "final_response": result.get("final_response", "")
         })
 
+        # 4. Save the REAL state back to disk immediately
+        save_state(state)
+
         print("\n🤖 AI Final Response Output:\n", state["final_response"])
         print("\n---")
 
 def force_test_midnight_loop():
     print("\n🌙 Force-Triggering Automated Background Graph immediately...")
     
-    mock_auto_state = {
-        "chunk_memory": [
-            "User resolved C++ segment fault errors by cleaning build logs",
-            "User plans to join Smart India Hackathon next season"
-        ],
-        "temporary_memory": [],
-        "retrieved_context": [],
-        "extracted_memories": [],
-        "final_response": "",
-        "date_memory": {},
-        "auto_ready": False,
-        "needs_more_search": False,
-        "needs_better_words": False,
-        "auto_review_count": 0
-    }
+    # 1. Load the REAL daily accumulated state instead of the mock
+    real_auto_state = load_state()
     
-    result = compiled_auto_graph.invoke(mock_auto_state)
+    # 2. Invoke graph using real data
+    result = compiled_auto_graph.invoke(real_auto_state)
+    
+    # 3. Save the resulting processed memories/dossier back
+    if result:
+        save_state(result)
+        
     print("\n📝 Resulting Dossier Generated:\n", result.get("final_response"))
 
 if __name__ == "__main__":
-    # Ensure your keys are in environment before starting
     if not os.getenv("GROQ_API_KEY"):
         print("⚠️ Warning: GROQ_API_KEY environment variable missing.")
         
