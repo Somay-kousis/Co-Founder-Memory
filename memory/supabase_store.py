@@ -1,7 +1,7 @@
 # memory/supabase_store.py
 import os
-from typing import Optional, Tuple, Any
-from langgraph.store.base import BaseStore, Item
+from typing import Optional, Tuple, Any, Iterable
+from langgraph.store.base import BaseStore, Item, Op, Result, GetOp, PutOp, SearchOp
 from supabase import create_client, Client
 
 class SupabaseStore(BaseStore):
@@ -108,3 +108,25 @@ class SupabaseStore(BaseStore):
         except Exception as e:
             print(f"SupabaseStore Error in search: {e}")
             return []
+
+    def batch(self, ops: Iterable[Op]) -> list[Result]:
+        results = []
+        for op in ops:
+            if isinstance(op, GetOp):
+                results.append(self.get(op.namespace, op.key))
+            elif isinstance(op, PutOp):
+                self.put(op.namespace, op.key, op.value)
+                results.append(None)
+            elif isinstance(op, SearchOp):
+                results.append(self.search(
+                    op.namespace_prefix,
+                    query=op.query,
+                    limit=op.limit,
+                    offset=op.offset
+                ))
+            else:
+                results.append(None)
+        return results
+
+    async def abatch(self, ops: Iterable[Op]) -> list[Result]:
+        return self.batch(ops)

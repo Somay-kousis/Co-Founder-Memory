@@ -1,5 +1,8 @@
 # rag/injest.py
 import os
+from dotenv import load_dotenv
+load_dotenv()
+
 from rag.loader import load_and_split_docs
 from rag.vectorstore import get_vectorstore
 
@@ -22,7 +25,7 @@ def main():
             # Clear old records to avoid duplication if running ingestion again
             try:
                 print("Clearing existing documents in Supabase vector store...")
-                db.client.table("documents").delete().neq("id", -1).execute()
+                db._client.table("documents").delete().neq("id", -1).execute()
             except Exception as delete_err:
                 print(f"Warning: Could not clear existing documents: {delete_err}")
         else:

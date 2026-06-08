@@ -56,6 +56,18 @@ def load_state():
             if res.data:
                 return res.data[0]["state"]
             else:
+                # If Supabase has no state, check if we can migrate existing local state
+                if os.path.exists(STATE_FILE):
+                    try:
+                        with open(STATE_FILE, "r") as f:
+                            local_state = json.load(f)
+                        logger.info("storage_utils: Migrating local state JSON to Supabase state_store...")
+                        supabase_client.table("state_store").insert({"id": "default", "state": local_state}).execute()
+                        return local_state
+                    except Exception as migrate_err:
+                        logger.warning(f"storage_utils: Failed to migrate local state to Supabase: {migrate_err}")
+                
+                # Otherwise start fresh
                 default_state = get_default_state()
                 supabase_client.table("state_store").insert({"id": "default", "state": default_state}).execute()
                 return default_state
