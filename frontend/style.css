@@ -1,18 +1,18 @@
 :root {
-    --bg: #07090d;
-    --panel: #0d1118;
-    --panel-2: #111722;
-    --panel-3: #151c29;
-    --ink: #f4f7fb;
-    --muted: #8d98a8;
-    --soft: #c8d0dc;
-    --line: rgba(255, 255, 255, 0.09);
-    --line-strong: rgba(255, 255, 255, 0.16);
-    --accent: #37d6b3;
-    --accent-2: #8b5cf6;
-    --amber: #f59e0b;
-    --danger: #fb7185;
-    --shadow: 0 22px 80px rgba(0, 0, 0, 0.38);
+    --bg: #101318;
+    --panel: #171b22;
+    --panel-2: #1b2028;
+    --panel-3: #202631;
+    --ink: #e8edf3;
+    --muted: #8993a2;
+    --soft: #b8c0cc;
+    --line: rgba(232, 237, 243, 0.08);
+    --line-strong: rgba(232, 237, 243, 0.14);
+    --accent: #79c7b7;
+    --accent-2: #9b8fd6;
+    --amber: #d49a4a;
+    --danger: #d97885;
+    --shadow: 0 16px 44px rgba(0, 0, 0, 0.24);
     --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
     --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
@@ -26,9 +26,9 @@ body {
     min-height: 100vh;
     color: var(--ink);
     background:
-        radial-gradient(circle at 14% 12%, rgba(55, 214, 179, 0.16), transparent 30%),
-        radial-gradient(circle at 84% 4%, rgba(139, 92, 246, 0.18), transparent 34%),
-        linear-gradient(180deg, #080a0f 0%, #050609 100%);
+        radial-gradient(circle at 12% 8%, rgba(121, 199, 183, 0.11), transparent 32%),
+        radial-gradient(circle at 86% 2%, rgba(155, 143, 214, 0.11), transparent 34%),
+        linear-gradient(180deg, #11151b 0%, #0e1116 100%);
     font-family: var(--sans);
 }
 
@@ -38,8 +38,8 @@ body::before {
     inset: 0;
     pointer-events: none;
     background-image:
-        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+        linear-gradient(rgba(232, 237, 243, 0.018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232, 237, 243, 0.018) 1px, transparent 1px);
     background-size: 42px 42px;
     mask-image: linear-gradient(to bottom, black, transparent 78%);
 }
@@ -76,7 +76,7 @@ button {
     padding: 9px 12px;
     border: 1px solid var(--line);
     border-radius: 8px;
-    background: rgba(13, 17, 24, 0.72);
+    background: rgba(23, 27, 34, 0.86);
     box-shadow: var(--shadow);
     backdrop-filter: blur(22px);
 }
@@ -91,9 +91,9 @@ button {
     height: 38px;
     display: grid;
     place-items: center;
-    border: 1px solid rgba(55, 214, 179, 0.36);
+    border: 1px solid rgba(121, 199, 183, 0.28);
     border-radius: 8px;
-    background: linear-gradient(145deg, rgba(55, 214, 179, 0.18), rgba(139, 92, 246, 0.14));
+    background: rgba(121, 199, 183, 0.08);
     color: var(--accent);
     font: 900 0.86rem/1 var(--mono);
 }
@@ -106,15 +106,15 @@ button {
 }
 
 .topbar h1 {
-    font-size: clamp(1.45rem, 3vw, 2.35rem);
+    font-size: clamp(1.35rem, 2.4vw, 2.05rem);
     line-height: 1;
 }
 
 .eyebrow {
     margin: 0 0 7px;
     color: var(--accent);
-    font: 800 0.68rem/1 var(--mono);
-    letter-spacing: 0.14em;
+    font: 700 0.66rem/1 var(--mono);
+    letter-spacing: 0.12em;
     text-transform: uppercase;
 }
 
@@ -137,8 +137,8 @@ button {
     gap: 8px;
     padding: 10px 12px;
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.05);
-    font: 800 0.72rem/1 var(--mono);
+    background: rgba(232, 237, 243, 0.045);
+    font: 700 0.7rem/1 var(--mono);
     text-transform: uppercase;
 }
 
@@ -147,25 +147,25 @@ button {
     height: 8px;
     border-radius: 999px;
     background: var(--amber);
-    box-shadow: 0 0 18px rgba(245, 158, 11, 0.8);
+    box-shadow: 0 0 10px rgba(212, 154, 74, 0.42);
 }
 
 .status-pill.ok .status-dot {
     background: var(--accent);
-    box-shadow: 0 0 18px rgba(55, 214, 179, 0.9);
+    box-shadow: 0 0 10px rgba(121, 199, 183, 0.44);
 }
 
 .status-pill.error .status-dot {
     background: var(--danger);
-    box-shadow: 0 0 18px rgba(251, 113, 133, 0.9);
+    box-shadow: 0 0 10px rgba(217, 120, 133, 0.44);
 }
 
 .ghost-button,
 .icon-button {
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(232, 237, 243, 0.05);
     border-radius: 8px;
     padding: 10px 13px;
-    font-weight: 800;
+    font-weight: 700;
 }
 
 .ghost-button:hover,
@@ -183,7 +183,7 @@ button {
 
 .cockpit-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.45fr) minmax(360px, 0.72fr);
+    grid-template-columns: minmax(0, 1.55fr) minmax(360px, 0.7fr);
     grid-template-rows: auto minmax(360px, 1fr) auto;
     grid-template-areas:
         "brief memory"
@@ -199,15 +199,15 @@ button {
 .timeline-panel {
     border: 1px solid var(--line);
     border-radius: 8px;
-    background: linear-gradient(180deg, rgba(17, 23, 34, 0.94), rgba(11, 15, 22, 0.94));
+    background: linear-gradient(180deg, rgba(27, 32, 40, 0.94), rgba(18, 22, 29, 0.94));
     box-shadow: var(--shadow);
     backdrop-filter: blur(22px);
 }
 
 .brief-panel {
     grid-area: brief;
-    min-height: 96px;
-    padding: 16px;
+    min-height: 84px;
+    padding: 14px 16px;
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(330px, 0.62fr);
     gap: 18px;
@@ -222,13 +222,15 @@ button {
     width: 360px;
     height: 360px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(55, 214, 179, 0.16), transparent 62%);
+    background: radial-gradient(circle, rgba(121, 199, 183, 0.08), transparent 62%);
 }
 
 .brief-panel h2 {
-    max-width: 780px;
-    font-size: clamp(1.55rem, 3vw, 2.8rem);
-    line-height: 1;
+    max-width: 720px;
+    color: #dfe5ec;
+    font-size: clamp(1.2rem, 1.95vw, 1.95rem);
+    font-weight: 800;
+    line-height: 1.05;
 }
 
 .signal-board {
@@ -241,10 +243,10 @@ button {
 .signal-board > div {
     flex: 1;
     min-width: 0;
-    padding: 14px;
+    padding: 12px 13px;
     border: 1px solid var(--line);
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.045);
+    background: rgba(232, 237, 243, 0.035);
 }
 
 .metric-value,
@@ -253,8 +255,8 @@ button {
 }
 
 .metric-value {
-    color: var(--ink);
-    font: 900 2rem/1 var(--mono);
+    color: #dfe6ee;
+    font: 800 1.45rem/1 var(--mono);
 }
 
 .metric-label {
@@ -266,7 +268,7 @@ button {
 .conversation-panel {
     grid-area: conversation;
     align-self: start;
-    height: clamp(360px, calc(100vh - 300px), 520px);
+    height: clamp(430px, calc(100vh - 252px), 620px);
     min-height: 0;
     padding: 16px;
     display: flex;
@@ -291,7 +293,7 @@ button {
 }
 
 .panel-heading h2 {
-    font-size: 1.28rem;
+    font-size: 1.18rem;
 }
 
 .panel-heading.compact {
@@ -312,34 +314,34 @@ button {
     border: 1px solid var(--line);
     border-radius: 8px;
     background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.015)),
-        #090d13;
+        linear-gradient(180deg, rgba(232, 237, 243, 0.025), rgba(232, 237, 243, 0.01)),
+        #12161d;
 }
 
 .chat-entry {
     max-width: 82%;
-    padding: 13px 14px;
-    margin-bottom: 12px;
+    padding: 12px 13px;
+    margin-bottom: 10px;
     border: 1px solid var(--line);
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.055);
+    background: rgba(232, 237, 243, 0.045);
 }
 
 .chat-entry.user {
     margin-left: auto;
-    border-color: rgba(55, 214, 179, 0.26);
-    background: rgba(55, 214, 179, 0.1);
+    border-color: rgba(121, 199, 183, 0.22);
+    background: rgba(121, 199, 183, 0.075);
 }
 
 .chat-entry.mind {
-    border-color: rgba(139, 92, 246, 0.28);
-    background: rgba(139, 92, 246, 0.12);
+    border-color: rgba(155, 143, 214, 0.18);
+    background: rgba(155, 143, 214, 0.07);
 }
 
 .chat-entry.system {
     max-width: 100%;
     border-color: rgba(255, 255, 255, 0.12);
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(232, 237, 243, 0.045);
 }
 
 .chat-meta {
@@ -355,7 +357,7 @@ button {
 .timeline-item p {
     margin: 0;
     color: var(--soft);
-    line-height: 1.55;
+    line-height: 1.62;
 }
 
 .composer {
@@ -366,10 +368,10 @@ button {
 .composer input {
     width: 100%;
     min-width: 0;
-    padding: 15px 16px;
+    padding: 14px 16px;
     border: 1px solid var(--line-strong);
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.055);
+    background: rgba(232, 237, 243, 0.045);
     color: var(--ink);
     outline: none;
 }
@@ -379,18 +381,18 @@ button {
 }
 
 .composer input:focus {
-    border-color: rgba(55, 214, 179, 0.58);
-    box-shadow: 0 0 0 4px rgba(55, 214, 179, 0.1);
+    border-color: rgba(121, 199, 183, 0.48);
+    box-shadow: 0 0 0 3px rgba(121, 199, 183, 0.08);
 }
 
 .composer button,
 .primary-wide {
-    padding: 15px 20px;
+    padding: 14px 20px;
     border-radius: 8px;
-    background: linear-gradient(135deg, var(--accent), #69f0d0);
-    color: #04100e;
+    background: #79c7b7;
+    color: #0c1715;
     border-color: transparent;
-    font-weight: 900;
+    font-weight: 800;
 }
 
 .composer button:hover,
@@ -410,10 +412,10 @@ button {
     border: 1px solid var(--line);
     border-radius: 8px;
     background:
-        radial-gradient(circle at 50% 50%, rgba(55, 214, 179, 0.08), transparent 42%),
-        linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-        #080c12;
+        radial-gradient(circle at 50% 50%, rgba(121, 199, 183, 0.055), transparent 42%),
+        linear-gradient(rgba(232, 237, 243, 0.026) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232, 237, 243, 0.026) 1px, transparent 1px),
+        #11161d;
     background-size: auto, 28px 28px, 28px 28px, auto;
 }
 
@@ -423,7 +425,7 @@ button {
 }
 
 .graph-link {
-    stroke: rgba(200, 208, 220, 0.22);
+    stroke: rgba(184, 192, 204, 0.18);
     stroke-width: 1.2;
 }
 
@@ -432,24 +434,24 @@ button {
 }
 
 .graph-node circle {
-    fill: #7d8795;
-    stroke: #0d1118;
+    fill: #818b98;
+    stroke: #151a22;
     stroke-width: 3px;
 }
 
 .graph-node.core circle {
     fill: var(--accent);
-    filter: drop-shadow(0 0 14px rgba(55, 214, 179, 0.5));
+    filter: drop-shadow(0 0 8px rgba(121, 199, 183, 0.32));
 }
 
 .graph-node.project circle {
-    fill: var(--amber);
+    fill: #c58a3e;
 }
 
 .graph-node text {
     text-anchor: middle;
-    fill: var(--soft);
-    font: 800 0.64rem/1 var(--mono);
+    fill: #aeb7c4;
+    font: 700 0.62rem/1 var(--mono);
     pointer-events: none;
 }
 
@@ -471,7 +473,7 @@ button {
 .empty-state {
     border: 1px solid var(--line);
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.045);
+    background: rgba(232, 237, 243, 0.04);
 }
 
 .vault-item {
@@ -482,7 +484,7 @@ button {
     display: inline-block;
     margin-bottom: 8px;
     color: var(--accent);
-    font: 900 0.64rem/1 var(--mono);
+    font: 800 0.62rem/1 var(--mono);
     letter-spacing: 0.08em;
     text-transform: uppercase;
 }
@@ -512,7 +514,7 @@ button {
 
 .timeline-item > span {
     color: var(--accent);
-    font: 900 0.82rem/1 var(--mono);
+    font: 800 0.8rem/1 var(--mono);
 }
 
 .timeline-item p {
