@@ -69,6 +69,8 @@ def retrieve_all_context(query: str, state_memories: list = None) -> dict:
                 clean_content = doc.page_content.strip()
                 source_meta = doc.metadata.get('source', 'unknown')
                 injected_context_lines.append(f"[{i}] (Source: {os.path.basename(source_meta)})\n{clean_content}\n")
+        else:
+            injected_context_lines.append("[Vector RAG Documents: No matching chunks found]")
     except Exception as e:
         print(f"⚠️ RAG Retrieval Error: VectorDB could not be reached. {e}")
         injected_context_lines.append("[RAG Database Context: Temporarily Unavailable]")
