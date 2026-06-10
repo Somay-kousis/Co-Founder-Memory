@@ -31,7 +31,7 @@ def append_user_message(state: ManualState) -> dict:
     user_query = state.get("user_query", "")
     
     if user_query:
-        current_temp.append(f"Human: {user_query}")
+        current_temp.append(f"User: {user_query}")
         
     if len(current_temp) >= 55:
         print(f"Temporary Memory: Buffer reached {len(current_temp)} entries. Automating slice compression...")

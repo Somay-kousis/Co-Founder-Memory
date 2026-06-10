@@ -110,10 +110,10 @@ function renderTimeline() {
 
 function normalizeMessage(message = "") {
     const isMind = /^(AI:|mind:)/i.test(message);
-    const isUser = /^User:/i.test(message);
+    const isUser = /^(User:|Human:)/i.test(message);
     return {
         role: isMind ? "mind" : isUser ? "user" : "note",
-        text: message.replace(/^(AI:|User:|mind:)\s*/i, ""),
+        text: message.replace(/^(AI:|User:|Human:|mind:)\s*/i, ""),
     };
 }
 

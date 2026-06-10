@@ -27,6 +27,7 @@ if not os.getenv("GROQ_API_KEY"):
 from graph.main_graph import compiled_main_graph, memory_store
 from graph.auto_graph import compiled_auto_graph
 from storage_utils import load_state, save_state, get_default_state
+from nodes.memory.temporary_memory_node import append_user_message
 
 app = FastAPI(
     title="Co-Founder Memory Cockpit",
@@ -133,6 +134,9 @@ def run_chat(req: ChatRequest):
     try:
         state = load_state()
         state["user_query"] = req.message
+
+        user_memory_update = append_user_message(state)
+        state.update(user_memory_update)
         
         # Invoke Main Graph
         result = compiled_main_graph.invoke(state)
