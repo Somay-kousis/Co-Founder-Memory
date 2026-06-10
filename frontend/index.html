@@ -7,34 +7,33 @@
     <meta name="description" content="A persistent co-founder cockpit for decisions, project momentum, and long-term memory.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
     <div class="app-shell">
         <header class="topbar">
-            <div>
-                <p class="eyebrow">Persistent AI operating memory</p>
-                <h1>Co-Founder Memory</h1>
+            <div class="brand-block">
+                <div class="brand-mark">CM</div>
+                <div>
+                    <p class="eyebrow">Persistent operating memory</p>
+                    <h1>Co-Founder Memory</h1>
+                </div>
             </div>
             <div class="topbar-actions">
                 <div class="status-pill" id="system-status">
                     <span class="status-dot"></span>
                     <span>connecting</span>
                 </div>
-                <button class="ghost-button" id="purge-btn" type="button">Reset session</button>
+                <button class="ghost-button" id="purge-btn" type="button">Reset</button>
             </div>
         </header>
 
         <main class="cockpit-grid">
-            <section class="hero-panel">
-                <div class="hero-copy">
-                    <p class="eyebrow">The second mind that keeps score</p>
-                    <h2>Ask, plan, remember, and surface what would otherwise disappear.</h2>
-                    <p class="hero-text">
-                        This cockpit turns project fragments into continuity: permanent profile memory, session state,
-                        retrieval context, and daily dossiers in one deployable system.
-                    </p>
+            <section class="brief-panel">
+                <div>
+                    <p class="eyebrow">Today’s continuity layer</p>
+                    <h2>Your ideas, decisions, and project drift stay queryable.</h2>
                 </div>
                 <div class="signal-board" aria-label="System signals">
                     <div>
@@ -43,7 +42,7 @@
                     </div>
                     <div>
                         <span class="metric-value" id="metric-projects">0</span>
-                        <span class="metric-label">tracked projects</span>
+                        <span class="metric-label">projects</span>
                     </div>
                     <div>
                         <span class="metric-value" id="metric-decisions">0</span>
@@ -56,7 +55,7 @@
                 <div class="panel-heading">
                     <div>
                         <p class="eyebrow">Command stream</p>
-                        <h2>Talk to the mind</h2>
+                        <h2>Ask, plan, or remember</h2>
                     </div>
                     <span class="clock" id="system-time">--:--:--</span>
                 </div>
@@ -66,7 +65,7 @@
                 </div>
 
                 <form class="composer" id="chat-form">
-                    <input id="chat-input" type="text" placeholder="Drop a memory, ask a question, or request a plan..." autocomplete="off">
+                    <input id="chat-input" type="text" placeholder="Tell it what changed, ask what matters, or request a plan..." autocomplete="off">
                     <button id="send-btn" type="submit">Send</button>
                 </form>
             </section>
@@ -74,8 +73,8 @@
             <aside class="memory-panel">
                 <div class="panel-heading compact">
                     <div>
-                        <p class="eyebrow">Profile graph</p>
-                        <h2>Living map</h2>
+                        <p class="eyebrow">Memory graph</p>
+                        <h2>Context map</h2>
                     </div>
                     <button class="icon-button" id="refresh-btn" type="button" title="Refresh memory">↻</button>
                 </div>
@@ -91,7 +90,7 @@
                 <div class="panel-heading compact">
                     <div>
                         <p class="eyebrow">Daily continuity</p>
-                        <h2>Timeline</h2>
+                        <h2>Dossier runs</h2>
                     </div>
                 </div>
                 <div class="timeline-list" id="timeline-log-list">
