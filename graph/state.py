@@ -1,5 +1,6 @@
 # graph/state.py
-from typing import List, Dict, TypedDict, NotRequired, Union
+from typing import List, TypedDict, Union
+from typing_extensions import NotRequired
 
 class ManualState(TypedDict):
     # input

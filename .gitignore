@@ -11,3 +11,5 @@ logs/
 *.log
 
 data/
+db/
+live_memory_state.json

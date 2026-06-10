@@ -2,7 +2,14 @@
 from langchain_community.tools import DuckDuckGoSearchRun
 from graph.state import SubGraphState
 
-search_tool = DuckDuckGoSearchRun()
+search_tool = None
+
+
+def get_search_tool():
+    global search_tool
+    if search_tool is None:
+        search_tool = DuckDuckGoSearchRun()
+    return search_tool
 
 def web_search_node(state: SubGraphState):
     """
@@ -15,7 +22,7 @@ def web_search_node(state: SubGraphState):
     print(f"🌐 CRAG Fallback: Running free DDG Search for: '{query}'")
     
     try:
-        search_result_text = search_tool.invoke(query)
+        search_result_text = get_search_tool().invoke(query)
         formatted_chunk = f"[Web Reference: DuckDuckGo Search Result]\n{search_result_text}"
         web_context_chunks = [formatted_chunk]
         print("🟢 CRAG Fallback: Successfully retrieved fresh results from DuckDuckGo.")

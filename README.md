@@ -340,7 +340,8 @@ It behaves not like a chat interface, but like a partner who has sat beside you 
 │   ├── plan/                   # Strategic design draft/review nodes
 │   └── subgraph_nodes/         # Quality control grading layers (CRAG/SRAG)
 ├── prompts/                    # Raw system prompt templates
-├── rag/                        # Chroma ingestors, embedding configs, and retrievers
+├── rag/                        # Supabase pgvector ingestors, embedding configs, and retrievers
+├── sql/                        # Supabase schema for remote state, memory, and vectors
 ├── scripts/                    # Test execution tools and scheduled loop daemons
 │   ├── run_manual.py           # CLI interactive workspace simulator
 │   └── run_midnight_loop.py    # Daily clock catch-up daemon scheduler
@@ -354,7 +355,8 @@ It behaves not like a chat interface, but like a partner who has sat beside you 
 
 ### 1. Prerequisites
 * Python 3.10 or higher
-* Groq API Key (accessing `llama-3.1-8b-instant`)
+* Groq API key
+* Supabase project for cloud deployment
 
 ### 2. Installation
 Clone the repository, create a virtual environment, and install dependencies:
@@ -373,75 +375,41 @@ Create a `.env` file in the root directory:
 ```env
 GROQ_API_KEY=your_groq_api_key_here
 
-# Supabase Credentials (Required for cloud deployment, fallback to local file if missing)
+# Supabase credentials. Required for cloud deployment.
 SUPABASE_URL=https://your-project.supabase.co
 SUPABASE_SERVICE_KEY=your-supabase-service-role-key
 PORT=8000
-RUN_BACKGROUND_SCHEDULER=true
+RUN_BACKGROUND_SCHEDULER=false
+EMBEDDINGS_PROVIDER=hash
+EMBEDDING_DIMENSIONS=384
 ```
 
 ### 4. Supabase Database Configuration
-Before running or deploying the project with Supabase, run this setup script in the **SQL Editor** of your Supabase console:
+Before running or deploying with Supabase, open the Supabase SQL Editor and run:
 
 ```sql
--- Enable the pgvector extension
-create extension if not exists vector;
-
--- Create pgvector table
-create table if not exists documents (
-  id bigserial primary key,
-  content text,
-  metadata jsonb,
-  embedding vector(384)
-);
-
--- HNSW similarity search index
-create index on documents using hnsw (embedding vector_cosine_ops);
-
--- Similarity search function
-create or replace function match_documents (
-  query_embedding vector(384),
-  match_threshold float,
-  match_count int
-)
-returns table (
-  id bigint,
-  content text,
-  metadata jsonb,
-  similarity float
-)
-language plpgsql stable
-as $$
-begin
-  return query
-  select
-    documents.id,
-    documents.content,
-    documents.metadata,
-    1 - (documents.embedding <=> query_embedding) as similarity
-  from documents
-  where 1 - (documents.embedding <=> query_embedding) > match_threshold
-  order by documents.embedding <=> query_embedding
-  limit match_count;
-end;
-$$;
-
--- State store table for run settings/history
-create table if not exists state_store (
-  id text primary key,
-  state jsonb not null,
-  updated_at timestamp with time zone default timezone('utc'::text, now()) not null
-);
-
--- LangGraph profile store table
-create table if not exists memory_store (
-  namespace text[] not null,
-  key text not null,
-  value jsonb not null,
-  updated_at timestamp with time zone default timezone('utc'::text, now()) not null,
-  primary key (namespace, key)
-);
+-- paste the contents of sql/supabase_schema.sql
 ```
+
+That script creates:
+* `state_store` for the live graph/session state.
+* `memory_store` for the permanent LangGraph profile.
+* `documents` plus `match_documents` for Supabase pgvector retrieval.
+
+The service-role key should only be stored as a backend environment variable. Do not expose it in frontend code.
+
+### 5. Free Render Deployment
+This repo includes `render.yaml`, so Render can create the service from the repository.
+
+1. Push this branch to GitHub.
+2. In Render, choose **New > Blueprint** and select the repo.
+3. Add these secret environment variables when prompted:
+   * `GROQ_API_KEY`
+   * `SUPABASE_URL`
+   * `SUPABASE_SERVICE_KEY`
+4. Deploy. The app exposes `/healthz` for Render health checks and serves the cockpit from `/`.
+
+Free hosts use ephemeral filesystems, so the deployed app is intentionally configured with `RUN_BACKGROUND_SCHEDULER=false` and Supabase persistence. Use the **Compile dossier** button for manual dossier runs.
 
 ---
 
@@ -455,7 +423,7 @@ PYTHONPATH=. python rag/injest.py
 ```
 
 ### Live Web Dashboard (Cockpit)
-Launch the unified FastAPI server which exposes web endpoints, starts the background daily loop scheduler, and serves a premium dark-mode management GUI:
+Launch the unified FastAPI server which exposes web endpoints and serves the cockpit:
 
 ```bash
 PYTHONPATH=. python app.py

@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: co-founder-memory
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /healthz
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: RUN_BACKGROUND_SCHEDULER
+        value: false
+      - key: EMBEDDINGS_PROVIDER
+        value: hash
+      - key: EMBEDDING_DIMENSIONS
+        value: 384
+      - key: GROQ_API_KEY
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_KEY
+        sync: false

@@ -3,145 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Co-Founder's Memory</title>
-    <meta name="description" content="A stateful second mind that preserves momentum, decisions, and narrative continuity.">
-    <!-- Google Fonts for Editorial Serif, Monospace, and Typewriter/Handwritten text -->
-    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Special+Elite&display=swap" rel="stylesheet">
+    <title>Co-Founder Memory</title>
+    <meta name="description" content="A persistent co-founder cockpit for decisions, project momentum, and long-term memory.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-    <!-- Coffee rings & spills overlay -->
-    <div class="spills-container">
-        <!-- SVG Coffee Stain bottom right -->
-        <svg class="coffee-stain stain-bottom-right" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-            <path d="M 100, 20 A 80, 80 0 1, 0 100, 180 A 80, 80 0 1, 0 100, 20 Z" fill="none" stroke="rgba(115, 90, 75, 0.12)" stroke-width="4.5" stroke-linecap="round" stroke-dasharray="12 5 18 10 6 14" />
-            <path d="M 98, 26 A 72, 72 0 1, 0 98, 170 A 72, 72 0 1, 0 98, 26 Z" fill="none" stroke="rgba(115, 90, 75, 0.06)" stroke-width="2" stroke-linecap="round" stroke-dasharray="10 8 14 12" />
-            <path d="M 50, 45 C 55, 48 58, 52 65, 50" fill="none" stroke="rgba(115, 90, 75, 0.1)" stroke-width="1.5" />
-            <path d="M 130, 150 C 135, 155 142, 160 148, 158" fill="none" stroke="rgba(115, 90, 75, 0.08)" stroke-width="2" />
-        </svg>
-        <!-- Coffee ring stain top left -->
-        <svg class="coffee-stain stain-top-left" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-            <path d="M 100, 20 A 80, 80 0 1, 0 100, 180 A 80, 80 0 1, 0 100, 20 Z" fill="none" stroke="rgba(115, 90, 75, 0.06)" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="15 6 10 12" />
-        </svg>
-    </div>
-
-    <!-- Pinned sketches/notes layer -->
-    <div class="workspace-wrapper">
-        
-        <!-- COLUMN 1: MEMORY FRAGMENTS -->
-        <aside class="panel side-panel left-panel">
-            <div class="sticky-note note-1">
-                <span class="pin"></span>
-                <p>"Wanted permanence in a world where everything keeps leaving."</p>
+    <div class="app-shell">
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">Persistent AI operating memory</p>
+                <h1>Co-Founder Memory</h1>
             </div>
-            
-            <div class="sticky-note note-2">
-                <span class="pin"></span>
-                <p>July 6 – AMD Hackathon.<br>Finalize Astra AI prototype.</p>
-            </div>
-
-            <div class="panel-header">
-                <span class="catalog-num">VOL. 01</span>
-                <h2>Memory Fragments</h2>
-                <p class="panel-desc">Unfinished progress logs and observations</p>
-            </div>
-
-            <div class="timeline-logs" id="timeline-log-list">
-                <!-- Timeline logs injected here -->
-                <div class="loading-placeholder">Reading timeline records...</div>
-            </div>
-        </aside>
-
-        <!-- COLUMN 2: FIELD JOURNAL (CENTER NOTEBOOK) -->
-        <main class="journal-notebook">
-            <div class="notebook-header">
-                <span class="notebook-title">Co-Founder's Memory</span>
-                <span class="status-indicator">
-                    <span class="pulse-dot"></span>
-                    active mind
-                </span>
-            </div>
-
-            <div class="notebook-pages">
-                <!-- Seam in the middle -->
-                <div class="notebook-seam"></div>
-
-                <!-- Page Left: Dialogue -->
-                <section class="notebook-page page-left">
-                    <h3>Interconnected Dialogue</h3>
-                    <div class="dialogue-container" id="chat-box">
-                        <div class="log-entry system">
-                            <span class="log-meta">[log_00] – system</span>
-                            <p class="log-text">Journal stream active. Seeking context from the vault.</p>
-                        </div>
-                        <div class="log-entry mind">
-                            <span class="log-meta">[log_01] – mind</span>
-                            <p class="log-text">Hey, it's just around the corner - 6th of July. I remember you adding it to your memory, so I'm guessing you're getting ready for it? What's on your mind? Are you working on a project to submit or still deciding?</p>
-                        </div>
-                    </div>
-                </section>
-
-                <!-- Page Right: Input & Action -->
-                <section class="notebook-page page-right">
-                    <h3>Response & Annotation</h3>
-                    
-                    <div class="instruction-block">
-                        <p>Type on the ledger line below to prompt the system.</p>
-                    </div>
-
-                    <div class="ledger-box">
-                        <div class="ledger-line-container">
-                            <input type="text" id="chat-input" class="ledger-input" placeholder="Type a memory, question, or goal..." autocomplete="off">
-                            <button id="send-btn" class="graphite-btn">Record</button>
-                        </div>
-                    </div>
-
-                    <div class="notebook-footer">
-                        <a href="#" id="purge-btn" class="notebook-link">Purge Session State</a>
-                        <span class="timestamp-stamp" id="system-time">00:00:00 // 2026-06-08</span>
-                    </div>
-                </section>
-            </div>
-        </main>
-
-        <!-- COLUMN 3: SYSTEM MAP & CONTEXT -->
-        <aside class="panel side-panel right-panel">
-            <div class="panel-header">
-                <span class="catalog-num">MAP // CONTEXT</span>
-                <h2>The Mind Map</h2>
-                <p class="panel-desc">interconnected goals, tools, and stack parameters</p>
-            </div>
-
-            <!-- Dynamic Interactive Knowledge Graph (Obsidian Style SVG) -->
-            <div class="map-viewport">
-                <svg id="knowledge-graph" width="100%" height="100%"></svg>
-                <div class="map-hint">Click nodes to view associations</div>
-            </div>
-
-            <!-- Decisions & Principles Vault -->
-            <div class="decisions-section">
-                <h3>Decisions & Core Principles</h3>
-                <div class="vault-scroll" id="decisions-vault">
-                    <p class="empty-vault-msg">No active guidelines or strategic choices saved in the vault.</p>
+            <div class="topbar-actions">
+                <div class="status-pill" id="system-status">
+                    <span class="status-dot"></span>
+                    <span>connecting</span>
                 </div>
+                <button class="ghost-button" id="purge-btn" type="button">Reset session</button>
             </div>
+        </header>
 
-            <!-- Action panel -->
-            <div class="compile-box">
-                <button id="compile-btn" class="border-btn">Compile Dossier</button>
-            </div>
-        </aside>
+        <main class="cockpit-grid">
+            <section class="hero-panel">
+                <div class="hero-copy">
+                    <p class="eyebrow">The second mind that keeps score</p>
+                    <h2>Ask, plan, remember, and surface what would otherwise disappear.</h2>
+                    <p class="hero-text">
+                        This cockpit turns project fragments into continuity: permanent profile memory, session state,
+                        retrieval context, and daily dossiers in one deployable system.
+                    </p>
+                </div>
+                <div class="signal-board" aria-label="System signals">
+                    <div>
+                        <span class="metric-value" id="metric-memories">0</span>
+                        <span class="metric-label">session notes</span>
+                    </div>
+                    <div>
+                        <span class="metric-value" id="metric-projects">0</span>
+                        <span class="metric-label">tracked projects</span>
+                    </div>
+                    <div>
+                        <span class="metric-value" id="metric-decisions">0</span>
+                        <span class="metric-label">decisions</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="conversation-panel">
+                <div class="panel-heading">
+                    <div>
+                        <p class="eyebrow">Command stream</p>
+                        <h2>Talk to the mind</h2>
+                    </div>
+                    <span class="clock" id="system-time">--:--:--</span>
+                </div>
+
+                <div class="chat-log" id="chat-box" aria-live="polite">
+                    <div class="empty-state">Loading the memory stream...</div>
+                </div>
+
+                <form class="composer" id="chat-form">
+                    <input id="chat-input" type="text" placeholder="Drop a memory, ask a question, or request a plan..." autocomplete="off">
+                    <button id="send-btn" type="submit">Send</button>
+                </form>
+            </section>
+
+            <aside class="memory-panel">
+                <div class="panel-heading compact">
+                    <div>
+                        <p class="eyebrow">Profile graph</p>
+                        <h2>Living map</h2>
+                    </div>
+                    <button class="icon-button" id="refresh-btn" type="button" title="Refresh memory">↻</button>
+                </div>
+                <div class="graph-wrap">
+                    <svg id="knowledge-graph" role="img" aria-label="Memory knowledge graph"></svg>
+                </div>
+                <div class="vault" id="decisions-vault">
+                    <div class="empty-state">No permanent decisions loaded yet.</div>
+                </div>
+            </aside>
+
+            <aside class="timeline-panel">
+                <div class="panel-heading compact">
+                    <div>
+                        <p class="eyebrow">Daily continuity</p>
+                        <h2>Timeline</h2>
+                    </div>
+                </div>
+                <div class="timeline-list" id="timeline-log-list">
+                    <div class="empty-state">Loading timeline...</div>
+                </div>
+                <button class="primary-wide" id="compile-btn" type="button">Compile dossier</button>
+            </aside>
+        </main>
     </div>
 
-    <!-- Full-screen Typewriter Dossier modal overlay -->
-    <div class="modal-overlay" id="dossier-modal">
-        <div class="dossier-paper">
-            <div class="dossier-tape"></div>
-            <div class="modal-close" id="close-modal-btn">✕ Close Report</div>
-            <div class="dossier-content" id="dossier-content-area">
-                <!-- Compiled markdown content rendered here -->
-            </div>
-        </div>
+    <div class="modal-overlay" id="dossier-modal" aria-hidden="true">
+        <article class="dossier-modal">
+            <button class="modal-close" id="close-modal-btn" type="button">Close</button>
+            <p class="eyebrow">Compiled dossier</p>
+            <div class="dossier-content" id="dossier-content-area"></div>
+        </article>
     </div>
 
     <script src="/script.js"></script>

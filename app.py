@@ -5,7 +5,6 @@ import threading
 import logging
 import uvicorn
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 from typing import Dict, Any
 
@@ -107,6 +106,14 @@ def get_state():
     except Exception as e:
         logger.exception("Error loading system state:")
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/healthz")
+def healthz():
+    return {
+        "ok": True,
+        "storage": "supabase" if os.getenv("SUPABASE_URL") else "local",
+        "scheduler": os.getenv("RUN_BACKGROUND_SCHEDULER", "true").lower() == "true",
+    }
 
 @app.get("/api/profile")
 def get_profile():
