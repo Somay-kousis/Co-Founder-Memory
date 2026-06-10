@@ -311,7 +311,7 @@ async function recordResponse(event) {
         renderEverything();
     } catch (error) {
         appState.system.temporary_memory = (appState.system.temporary_memory || []).filter((item) => item !== "AI: thinking...");
-        appState.system.temporary_memory.push(`AI: Sync failed: ${error.message}`);
+        appState.system.temporary_memory.push("AI: I hit a backend sync issue while answering. Try once more; the error has been logged server-side.");
         renderChat();
     } finally {
         $("#send-btn").disabled = false;
