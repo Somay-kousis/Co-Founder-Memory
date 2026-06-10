@@ -12,6 +12,34 @@ llm = ChatGroq(
     temperature=0.2,  # Low temperature ensures strict, analytical evaluation
 )
 
+
+def format_plan_for_display(plan_data) -> str:
+    if not isinstance(plan_data, dict):
+        return str(plan_data)
+
+    lines = [
+        "### Current Plan",
+        f"**Project:** {plan_data.get('project_name', 'Untitled')}",
+        f"**Milestone:** {plan_data.get('current_milestone', 'Not specified')}",
+        "",
+        "**Tasks**",
+    ]
+
+    for task in plan_data.get("tasks", []):
+        dependencies = task.get("dependencies") or []
+        dependency_text = f" Dependencies: {', '.join(dependencies)}." if dependencies else ""
+        lines.append(
+            f"- `{task.get('task_id', 'task')}` **{task.get('title', 'Untitled task')}** "
+            f"({task.get('status', 'pending')}): {task.get('description', '')}{dependency_text}"
+        )
+
+    risks = plan_data.get("risks_and_blockers") or []
+    if risks:
+        lines.extend(["", "**Risks / Blockers**"])
+        lines.extend([f"- {risk}" for risk in risks])
+
+    return "\n".join(lines)
+
 def plan_review_node(state: ManualState):
     """
     Evaluates the newly generated plan in the state using the structural prompt,
@@ -49,6 +77,7 @@ def plan_review_node(state: ManualState):
         
         user_display = (
             f"{state.get('final_response', '')}\n\n"
+            f"{format_plan_for_display(current_plan_data)}\n\n"
             f"### 🛡️ Architect Review (Approved)\n{clean_feedback}"
         )
         return {

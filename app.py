@@ -27,7 +27,7 @@ if not os.getenv("GROQ_API_KEY"):
 from graph.main_graph import compiled_main_graph, memory_store
 from graph.auto_graph import compiled_auto_graph
 from storage_utils import load_state, save_state, get_default_state
-from nodes.memory.temporary_memory_node import append_user_message
+from nodes.memory.temporary_memory_node import append_user_message, append_ai_message
 
 app = FastAPI(
     title="Co-Founder Memory Cockpit",
@@ -143,15 +143,25 @@ def run_chat(req: ChatRequest):
         
         # Extract updates
         updated_state = {
+            "query_type": result.get("query_type", state.get("query_type")),
             "temporary_memory": result.get("temporary_memory", state.get("temporary_memory", [])),
             "chunk_memory": result.get("chunk_memory", state.get("chunk_memory", []),),
             "extracted_memories": result.get("extracted_memories", state.get("extracted_memories", [])),
             "retrieved_context": result.get("retrieved_context", state.get("retrieved_context", [])),
-            "final_response": result.get("final_response", "")
+            "final_response": result.get("final_response", ""),
+            "plan": result.get("plan", state.get("plan")),
+            "plan_review": result.get("plan_review", state.get("plan_review", "")),
+            "plan_ready": result.get("plan_ready", state.get("plan_ready", False)),
+            "plan_review_count": result.get("plan_review_count", state.get("plan_review_count", 0)),
         }
         
         # Sync state
         state.update(updated_state)
+        final_response = state.get("final_response", "")
+        if final_response:
+            expected_last_entry = f"AI: {final_response}"
+            if expected_last_entry not in (state.get("temporary_memory") or [])[-2:]:
+                state.update(append_ai_message(state))
         save_state(state)
         
         return {
