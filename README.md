@@ -5,12 +5,13 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/python-3.10%2B-blue.svg" alt="Python Version" />
+  <img src="https://img.shields.io/badge/Python-backend-3776AB.svg" alt="Python" />
   <img src="https://img.shields.io/badge/framework-LangGraph-orange.svg" alt="LangGraph" />
-  <img src="https://img.shields.io/badge/LLM-Llama--3.1--8B%20(Groq)-lightblue.svg" alt="LLM Provider" />
+  <img src="https://img.shields.io/badge/LLM-Llama--3.3--70B%20(Groq)-lightblue.svg" alt="LLM Provider" />
   <img src="https://img.shields.io/badge/VectorDB-Chroma-red.svg" alt="Vector Database" />
   <img src="https://img.shields.io/badge/Search-DuckDuckGo-yellow.svg" alt="Web Search" />
-  <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License" />
+  <img src="https://img.shields.io/badge/Supabase-pgvector-3FCF8E.svg" alt="Supabase" />
+  <img src="https://img.shields.io/badge/FastAPI-backend-009688.svg" alt="FastAPI" />
 </p>
 
 Co-Founder Memory is an agentic, stateful system designed to capture engineering logs, extract persistent developer preferences, compile chronological project dossiers, and run verified, self-correcting retrieval loops. The architecture leverages LangGraph for multi-agent coordination, database-grounded memory stores, and critique-driven planning.
@@ -55,39 +56,31 @@ The manual track orchestrates live user interaction, parsing request types to ro
 
 ```mermaid
 flowchart TD
-    %% Styling classes
-    classDef default fill:#181825,stroke:#cdd6f4,stroke-width:1px,color:#cdd6f4;
-    classDef startEnd fill:#313244,stroke:#a6e3a1,stroke-width:2px,color:#a6e3a1;
-    classDef decisionNode fill:#313244,stroke:#f9e2af,stroke-width:1px,color:#f9e2af;
-    classDef actionNode fill:#181825,stroke:#89b4fa,stroke-width:1px,color:#89b4fa;
-    classDef memoryNode fill:#181825,stroke:#f38ba8,stroke-width:1px,color:#f38ba8;
-    classDef noteNode fill:#313244,stroke:#cba6f7,stroke-width:1px,stroke-dasharray: 3 3,color:#cba6f7;
-
-    START([START]):::startEnd --> UserInput[User Input]
-    UserInput --> CaptureTemp[capture temp memory]:::actionNode
-    CaptureTemp --> QueryClassifier{Query Classifier}:::decisionNode
+    START([START]) --> UserInput[User Input]
+    UserInput --> CaptureTemp[capture temp memory]
+    CaptureTemp --> QueryClassifier{Query Classifier}
 
     %% Memory Extraction Track
-    QueryClassifier --> UserMemExtract[User Memory Extraction]:::memoryNode
-    UserMemExtract -- "prompts with entire user demanded traits" --> CheckIntent{Check Intent}:::decisionNode
+    QueryClassifier --> UserMemExtract[User Memory Extraction]
+    UserMemExtract -- "prompts with entire user demanded traits" --> CheckIntent{Check Intent}
     
-    CaptureTemp --> SummaryMemExtract[Summary Memory Extraction]:::memoryNode
+    CaptureTemp --> SummaryMemExtract[Summary Memory Extraction]
     SummaryMemExtract -- "prompt with extracted from chat summary" --> CheckIntent
     
-    CheckIntent --> ApplyChanges[apply_memory_changes_node]:::actionNode
-    AddUpdate[Add/Update Memory]:::noteNode --> ApplyChanges
-    DeleteMem[Delete Memory]:::noteNode --> ApplyChanges
-    ApplyChanges --> END([END]):::startEnd
+    CheckIntent --> ApplyChanges[apply_memory_changes_node]
+    AddUpdate[Add/Update Memory] --> ApplyChanges
+    DeleteMem[Delete Memory] --> ApplyChanges
+    ApplyChanges --> END([END])
 
     %% Plan Review Track
-    QueryClassifier --> Plan[Plan]:::actionNode
-    Plan <--> ReviewPlan[Review]:::actionNode
+    QueryClassifier --> Plan[Plan]
+    Plan <--> ReviewPlan[Review]
     ReviewPlan --> END
 
     %% Retrieval / Chat Track
-    QueryClassifier --> AskDecision{Memory needed?}:::decisionNode
-    AskDecision -- "True" --> AskRag[AskRag]:::actionNode
-    AskDecision -- "False" --> Ask[Ask]:::actionNode
+    QueryClassifier --> AskDecision{Memory needed?}
+    AskDecision -- "True" --> AskRag[AskRag]
+    AskDecision -- "False" --> Ask[Ask]
     
     AskRag --> END
     Ask --> END
@@ -101,38 +94,32 @@ The daily background timeline loop processes laptop catchup context, compiles da
 
 ```mermaid
 flowchart TD
-    classDef default fill:#181825,stroke:#cdd6f4,stroke-width:1px,color:#cdd6f4;
-    classDef startEnd fill:#313244,stroke:#a6e3a1,stroke-width:2px,color:#a6e3a1;
-    classDef decisionNode fill:#313244,stroke:#f9e2af,stroke-width:1px,color:#f9e2af;
-    classDef actionNode fill:#181825,stroke:#89b4fa,stroke-width:1px,color:#89b4fa;
-    classDef noteNode fill:#313244,stroke:#cba6f7,stroke-width:1px,stroke-dasharray: 3 3,color:#cba6f7;
-
-    CRON([Cron]):::startEnd --> AutoStart[Auto Start]
+    CRON([Cron]) --> AutoStart[Auto Start]
     
     %% Create Date Memory Path
-    AutoStart --> CreateDate[Create Date memory]:::actionNode
+    AutoStart --> CreateDate[Create Date memory]
     
     %% Main Chain
-    AutoStart --> UnderstandContext[Understand the context]:::actionNode
-    ContextNote[Permanent Memory / date wise summary section]:::noteNode -.-> UnderstandContext
+    AutoStart --> UnderstandContext[Understand the context]
+    ContextNote[Permanent Memory / date wise summary section] -.-> UnderstandContext
     
-    UnderstandContext --> GenSearch[Generate Search Query]:::actionNode
-    QueryNote[Last 3 Day]:::noteNode -.-> GenSearch
+    UnderstandContext --> GenSearch[Generate Search Query]
+    QueryNote[Last 3 Day] -.-> GenSearch
     
-    GenSearch --> Search[Search]:::actionNode
+    GenSearch --> Search[Search]
     
     %% Search Inputs
-    GithubNote[github]:::noteNode -.-> Search
-    WebSearchNote[general web search]:::noteNode -.-> Search
-    GoalNote[Permanent memory Plan/Future goal section]:::noteNode -.-> Search
-    JobNote[Starting job opportunity targeted web search]:::noteNode -.-> Search
+    GithubNote[github] -.-> Search
+    WebSearchNote[general web search] -.-> Search
+    GoalNote[Permanent memory Plan/Future goal section] -.-> Search
+    JobNote[Starting job opportunity targeted web search] -.-> Search
 
-    Search --> Review[Review]:::actionNode
+    Search --> Review[Review]
     Review -- "Generated the related doc with systems / Loop back" --> Search
     
-    Review --> GenAutoMem[Generate auto memory]:::actionNode
-    GenAutoMem --> Notify[Notify the user]:::actionNode
-    Notify --> END([END]):::startEnd
+    Review --> GenAutoMem[Generate auto memory]
+    GenAutoMem --> Notify[Notify the user]
+    Notify --> END([END])
     
     CreateDate --> END
 ```
@@ -148,22 +135,16 @@ Embedded within the `AskRag` node is a self-correcting RAG subgraph that grades 
 
 ```mermaid
 flowchart TD
-    classDef default fill:#181825,stroke:#cdd6f4,stroke-width:1px,color:#cdd6f4;
-    classDef startEnd fill:#313244,stroke:#a6e3a1,stroke-width:2px,color:#a6e3a1;
-    classDef routeNode fill:#313244,stroke:#f38ba8,stroke-width:1px,stroke-dasharray: 4 4,color:#f38ba8;
-
-    START([Start Subgraph]):::startEnd --> GradeDocs[grade_documents_node]
-    GradeDocs --> RouteSearch{route_subgraph_search}:::routeNode
+    START([Start Subgraph]) --> GradeDocs[grade_documents_node]
+    GradeDocs --> RouteSearch{route_subgraph_search}
     
     subgraph FallbackLoop [Fallback Web Search]
         RouteSearch -- "True (Missing/Irrelevant Context)" --> WebSearch[web_search_node]
         WebSearch --> GradeGen[grade_generation_node]
     end
     
-    RouteSearch -- "False (Validated Context)" --> END([End Subgraph]):::startEnd
+    RouteSearch -- "False (Validated Context)" --> END([End Subgraph])
     GradeGen --> END
-
-    style FallbackLoop fill:#11111b,stroke:#f38ba8,stroke-width:1px;
 ```
 </details>
 
